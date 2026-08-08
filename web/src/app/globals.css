@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+/*
+  KLΘT NOMAD design tokens.
+  This is an always-dark, cinematic brand site — it does not adapt to
+  the visitor's OS light/dark preference.
+*/
+:root {
+  --void: #050506;
+  --surface: #0d0d10;
+  --surface-raised: #17171b;
+  --line: #242429;
+  --foreground: #f4f2ec;
+  --muted: #8d8d95;
+
+  /* Colorway signals, pulled from the product photography */
+  --gold: #e3b23c;
+  --gold-glow: #f7d878;
+  --cobalt: #2c5fe0;
+  --cobalt-glow: #6ea0ff;
+  --solar: #f2a81d;
+  --solar-glow: #d8e84a;
+}
+
+@theme inline {
+  --color-void: var(--void);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--line);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+
+  --color-gold: var(--gold);
+  --color-gold-glow: var(--gold-glow);
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-glow: var(--cobalt-glow);
+  --color-solar: var(--solar);
+  --color-solar-glow: var(--solar-glow);
+
+  --font-display: var(--font-space-grotesk);
+  --font-technical: var(--font-chakra-petch);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--void);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
