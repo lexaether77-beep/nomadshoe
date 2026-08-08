@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CartBadge } from "@/components/CartBadge";
 
 export function Header() {
   return (
@@ -16,6 +17,7 @@ export function Header() {
         >
           Nomad
         </Link>
+        <CartBadge />
         <Link
           href="/nomad"
           className="rounded-full bg-foreground px-5 py-2 font-technical text-sm font-medium text-void transition-transform hover:scale-105"

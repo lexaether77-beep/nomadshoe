@@ -1,0 +1,235 @@
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import { colorways, getColorway, type Colorway, type ColorwaySlug } from "@/lib/colorways";
+import { nomadMeta, nomadSizesEU, nomadSpecs } from "@/lib/specs";
+import { useCartStore } from "@/lib/cart-store";
+import { ProductStage } from "@/components/ProductStage";
+
+const ACCENT_RING: Record<Colorway["accent"], string> = {
+  gold: "ring-gold",
+  cobalt: "ring-cobalt",
+  solar: "ring-solar",
+};
+
+const ACCENT_BG: Record<Colorway["accent"], string> = {
+  gold: "bg-gold",
+  cobalt: "bg-cobalt",
+  solar: "bg-solar",
+};
+
+type ImageKey = "sideA" | "sideB" | "top" | "sole" | "heel" | "pair";
+
+const IMAGE_LABELS: Record<ImageKey, string> = {
+  sideA: "Profile",
+  sideB: "Profile B",
+  top: "Top",
+  sole: "Sole",
+  heel: "Heel",
+  pair: "Pair",
+};
+
+export function ProductView({
+  initialColorwaySlug,
+}: {
+  initialColorwaySlug: ColorwaySlug;
+}) {
+  const [colorway, setColorway] = useState<Colorway>(
+    getColorway(initialColorwaySlug) ?? colorways[0]
+  );
+  const [activeImage, setActiveImage] = useState<ImageKey>("sideA");
+  const [size, setSize] = useState<number | null>(null);
+  const [showSizePrompt, setShowSizePrompt] = useState(false);
+  const [justAdded, setJustAdded] = useState(false);
+  const addItem = useCartStore((state) => state.addItem);
+
+  function selectColorway(next: Colorway) {
+    if (next.slug === colorway.slug) return;
+    setColorway(next);
+    setActiveImage("sideA");
+  }
+
+  function handleAddToCart() {
+    if (size === null) {
+      setShowSizePrompt(true);
+      return;
+    }
+    addItem(colorway.slug, size);
+    setShowSizePrompt(false);
+    setJustAdded(true);
+    window.setTimeout(() => setJustAdded(false), 1600);
+  }
+
+  return (
+    <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 px-6 pb-24 lg:grid-cols-2 lg:gap-16">
+      {/* Gallery */}
+      <div className="relative">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={colorway.slug}
+            initial={{ opacity: 0, scale: 0.97 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.97 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ProductStage
+              colorway={colorway}
+              image={colorway.images[activeImage]}
+              alt={`KLOT NOMAD, ${colorway.name}, ${IMAGE_LABELS[activeImage]} view`}
+              priority
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Light-wipe flash on colorway change */}
+        <AnimatePresence>
+          <motion.div
+            key={`wipe-${colorway.slug}`}
+            initial={{ opacity: 0.5 }}
+            animate={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className={`pointer-events-none absolute inset-0 rounded-2xl ${ACCENT_BG[colorway.accent]}`}
+          />
+        </AnimatePresence>
+
+        <div className="mt-4 grid grid-cols-6 gap-2">
+          {(Object.keys(IMAGE_LABELS) as ImageKey[]).map((key) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setActiveImage(key)}
+              className={`relative aspect-square overflow-hidden rounded-lg bg-surface ring-1 transition-colors ${
+                activeImage === key ? ACCENT_RING[colorway.accent] : "ring-line"
+              }`}
+              aria-label={IMAGE_LABELS[key]}
+              aria-pressed={activeImage === key}
+            >
+              <Image
+                src={colorway.images[key]}
+                alt=""
+                fill
+                sizes="80px"
+                className="object-cover opacity-70"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Info panel */}
+      <div>
+        <p className="font-technical text-xs tracking-[0.35em] text-muted uppercase">
+          {nomadMeta.brand} {nomadMeta.model}
+        </p>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={colorway.slug}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.35 }}
+          >
+            <h1 className="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl">
+              {colorway.name}
+            </h1>
+            <p className="mt-1 text-muted">{colorway.tagline}</p>
+          </motion.div>
+        </AnimatePresence>
+
+        <p className="mt-6 font-display text-2xl font-medium">
+          ${nomadMeta.priceUSD}
+          <span className="ml-2 text-sm font-normal text-muted">
+            USD &middot; full preorder payment &middot; NGN available at checkout
+          </span>
+        </p>
+
+        {/* Colorway swatches */}
+        <div className="mt-8">
+          <p className="font-technical text-xs tracking-[0.2em] text-muted uppercase">
+            Colorway
+          </p>
+          <div className="mt-3 flex gap-3">
+            {colorways.map((cw) => (
+              <button
+                key={cw.slug}
+                type="button"
+                onClick={() => selectColorway(cw)}
+                aria-label={cw.name}
+                aria-pressed={colorway.slug === cw.slug}
+                className={`h-10 w-10 rounded-full ${ACCENT_BG[cw.accent]} ring-2 ring-offset-2 ring-offset-void transition-all ${
+                  colorway.slug === cw.slug ? ACCENT_RING[cw.accent] : "ring-transparent"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Size selector */}
+        <div className="mt-8">
+          <div className="flex items-baseline justify-between">
+            <p className="font-technical text-xs tracking-[0.2em] text-muted uppercase">
+              Size (EU)
+            </p>
+            {showSizePrompt && (
+              <span className="font-technical text-xs text-solar">
+                Select a size
+              </span>
+            )}
+          </div>
+          <div className="mt-3 grid grid-cols-6 gap-2">
+            {nomadSizesEU.map((s) => (
+              <button
+                key={s}
+                type="button"
+                onClick={() => {
+                  setSize(s);
+                  setShowSizePrompt(false);
+                }}
+                className={`rounded-lg py-2 font-technical text-sm ring-1 transition-colors ${
+                  size === s
+                    ? `${ACCENT_BG[colorway.accent]} text-void ring-transparent`
+                    : "bg-surface text-foreground ring-line hover:ring-muted"
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleAddToCart}
+          className="mt-8 w-full rounded-full bg-foreground py-4 font-technical text-sm font-medium text-void transition-transform hover:scale-[1.01]"
+        >
+          {justAdded ? "Added to Cart" : "Add to Cart"}
+        </button>
+
+        {/* Spec sheet */}
+        <div className="mt-12 rounded-2xl bg-surface p-6 ring-1 ring-line">
+          <p className="font-technical text-xs tracking-[0.3em] text-muted uppercase">
+            Specification
+          </p>
+          <dl className="mt-5 flex flex-col gap-3">
+            {nomadSpecs.map((spec) => (
+              <div
+                key={spec.label}
+                className="flex flex-col gap-0.5 border-b border-line pb-3 last:border-none last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
+              >
+                <dt className="font-technical text-sm text-muted">
+                  {spec.label}
+                </dt>
+                <dd className="font-technical text-sm sm:text-right">
+                  {spec.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </div>
+  );
+}

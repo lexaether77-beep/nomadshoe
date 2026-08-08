@@ -18,4 +18,9 @@ export const nomadMeta = {
   sku: "KLT-NMD-BGP-001",
   release: "October 2026",
   origin: "Lagos, Nigeria",
+  priceUSD: 100,
 } as const;
+
+export const nomadSizesEU = [
+  35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+] as const;

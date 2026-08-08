@@ -34,12 +34,12 @@ export function BrandStory() {
           {nomadSpecs.map((spec) => (
             <div
               key={spec.label}
-              className="flex items-baseline justify-between gap-4 border-b border-line pb-3 last:border-none last:pb-0"
+              className="flex flex-col gap-0.5 border-b border-line pb-3 last:border-none last:pb-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
             >
               <dt className="font-technical text-sm text-muted">
                 {spec.label}
               </dt>
-              <dd className="font-technical text-sm text-right">
+              <dd className="font-technical text-sm sm:text-right">
                 {spec.value}
               </dd>
             </div>
