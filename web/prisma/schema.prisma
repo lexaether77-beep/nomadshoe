@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum Currency {
+  USD
+  NGN
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  reference String      @unique
+  status    OrderStatus @default(PENDING)
+  currency  Currency
+  amount    Decimal     @db.Decimal(10, 2)
+
+  fullName String
+  email    String
+  phone    String
+  address  String
+  city     String
+  country  String
+
+  flutterwaveTxId String?
+
+  items OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+}
+
+model OrderItem {
+  id      String @id @default(cuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+
+  colorwaySlug String
+  size         Int
+  quantity     Int
+  unitPriceUSD Int
+}
