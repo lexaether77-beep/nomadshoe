@@ -52,6 +52,17 @@ export function ProductStage({
         aria-hidden
       />
 
+      {/* Extra bottom burn: swallows the shoe's cast shadow on the studio floor */}
+      <div
+        className="pointer-events-none absolute inset-0 z-20"
+        style={{
+          background:
+            "linear-gradient(to bottom, transparent 62%, var(--void) 92%)",
+          mixBlendMode: "multiply",
+        }}
+        aria-hidden
+      />
+
       {/* Rim glow: sits above the multiply layer so the colorway signal survives the burn */}
       <div
         className="pointer-events-none absolute inset-0 z-30 rounded-2xl"
