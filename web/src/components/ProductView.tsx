@@ -182,7 +182,7 @@ export function ProductView({
               </span>
             )}
           </div>
-          <div className="mt-3 grid grid-cols-6 gap-2">
+          <div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-6">
             {nomadSizesEU.map((s) => (
               <button
                 key={s}
@@ -191,7 +191,7 @@ export function ProductView({
                   setSize(s);
                   setShowSizePrompt(false);
                 }}
-                className={`rounded-lg py-2 font-technical text-sm ring-1 transition-colors ${
+                className={`min-h-11 rounded-lg py-2 font-technical text-sm ring-1 transition-colors ${
                   size === s
                     ? `${ACCENT_BG[colorway.accent]} text-void ring-transparent`
                     : "bg-surface text-foreground ring-line hover:ring-muted"

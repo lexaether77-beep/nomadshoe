@@ -10,7 +10,7 @@ export function CartBadge() {
   return (
     <Link
       href="/cart"
-      className="font-technical text-sm text-muted transition-colors hover:text-foreground"
+      className="inline-flex min-h-11 items-center font-technical text-sm text-muted transition-colors hover:text-foreground"
     >
       Cart{count > 0 ? ` (${count})` : ""}
     </Link>
