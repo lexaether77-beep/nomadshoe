@@ -75,9 +75,10 @@ export default function PrivacyPage() {
             </h2>
             <p className="mt-2">
               Your shopping cart is stored locally in your browser and never
-              leaves your device until you check out. We don&rsquo;t
-              currently use tracking cookies or third-party analytics on this
-              site.
+              leaves your device until you check out. We use Vercel Web
+              Analytics to see aggregate page-view and conversion trends
+              &mdash; it doesn&rsquo;t use cookies and doesn&rsquo;t track you
+              individually or across other sites.
             </p>
           </section>
 

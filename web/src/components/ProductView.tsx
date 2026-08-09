@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -23,6 +23,8 @@ const ACCENT_BG: Record<Colorway["accent"], string> = {
 
 type ImageKey = "sideA" | "sideB" | "top" | "sole" | "heel" | "pair";
 
+const IMAGE_KEYS: ImageKey[] = ["sideA", "sideB", "top", "sole", "heel", "pair"];
+
 const IMAGE_LABELS: Record<ImageKey, string> = {
   sideA: "Profile",
   sideB: "Profile B",
@@ -31,6 +33,8 @@ const IMAGE_LABELS: Record<ImageKey, string> = {
   heel: "Heel",
   pair: "Pair",
 };
+
+const SWIPE_THRESHOLD_PX = 50;
 
 export function ProductView({
   initialColorwaySlug,
@@ -45,7 +49,10 @@ export function ProductView({
   const [showSizePrompt, setShowSizePrompt] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
   const [announcement, setAnnouncement] = useState("");
+  const [showStickyBar, setShowStickyBar] = useState(false);
   const addItem = useCartStore((state) => state.addItem);
+  const touchStartX = useRef<number | null>(null);
+  const mainCtaRef = useRef<HTMLButtonElement>(null);
 
   function selectColorway(next: Colorway) {
     if (next.slug === colorway.slug) return;
@@ -66,10 +73,53 @@ export function ProductView({
     window.setTimeout(() => setJustAdded(false), 1600);
   }
 
+  function handleTouchStart(e: React.TouchEvent) {
+    touchStartX.current = e.touches[0].clientX;
+  }
+
+  function handleTouchEnd(e: React.TouchEvent) {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(delta) < SWIPE_THRESHOLD_PX) return;
+
+    const currentIndex = IMAGE_KEYS.indexOf(activeImage);
+    const nextIndex =
+      delta < 0
+        ? (currentIndex + 1) % IMAGE_KEYS.length
+        : (currentIndex - 1 + IMAGE_KEYS.length) % IMAGE_KEYS.length;
+    setActiveImage(IMAGE_KEYS[nextIndex]);
+  }
+
+  useEffect(() => {
+    let ticking = false;
+    function checkPosition() {
+      const el = mainCtaRef.current;
+      ticking = false;
+      if (!el) return;
+      // Only show once the button has scrolled above the viewport —
+      // not before the user has scrolled down to it in the first place.
+      setShowStickyBar(el.getBoundingClientRect().top < 0);
+    }
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(checkPosition);
+    }
+    checkPosition();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
+    <>
     <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-12 px-6 pb-24 lg:grid-cols-2 lg:gap-16">
       {/* Gallery */}
-      <div className="relative">
+      <div
+        className="relative"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={colorway.slug}
@@ -204,6 +254,7 @@ export function ProductView({
         </div>
 
         <button
+          ref={mainCtaRef}
           type="button"
           onClick={handleAddToCart}
           className="mt-8 w-full rounded-full bg-foreground py-4 font-technical text-sm font-medium text-void transition-transform hover:scale-[1.01]"
@@ -244,5 +295,34 @@ export function ProductView({
         </div>
       </div>
     </div>
+
+    {/* Sticky mobile add-to-cart bar */}
+    <AnimatePresence>
+      {showStickyBar && (
+        <motion.div
+          initial={{ y: 80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 80, opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="fixed inset-x-0 bottom-0 z-40 flex items-center gap-4 border-t border-line bg-void/95 px-4 py-3 backdrop-blur-sm sm:hidden"
+        >
+          <div className="flex-1 truncate font-technical text-sm">
+            <span className="font-medium">{colorway.name}</span>
+            {size !== null && (
+              <span className="text-muted"> &middot; EU {size}</span>
+            )}
+            <span className="ml-2 text-muted">${nomadMeta.priceUSD}</span>
+          </div>
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            className="min-h-11 shrink-0 rounded-full bg-foreground px-6 font-technical text-sm font-medium text-void"
+          >
+            {justAdded ? "Added" : "Add to Cart"}
+          </button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }
