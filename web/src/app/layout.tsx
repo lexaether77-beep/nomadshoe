@@ -25,7 +25,11 @@ export const metadata: Metadata = {
     "The KLΘT NOMAD barefoot shoe. Zero-drop, five-toe, Nsibidi-inspired. Designed in Lagos. Preorder now.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"

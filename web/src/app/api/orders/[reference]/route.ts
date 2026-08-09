@@ -3,9 +3,9 @@ import { db } from "@/lib/db";
 
 export async function GET(
   _request: Request,
-  ctx: RouteContext<"/api/orders/[reference]">
+  { params }: { params: Promise<{ reference: string }> }
 ) {
-  const { reference } = await ctx.params;
+  const { reference } = await params;
   const order = await db.order.findUnique({
     where: { reference },
     select: { status: true },

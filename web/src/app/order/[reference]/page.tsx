@@ -4,8 +4,12 @@ import { Footer } from "@/components/Footer";
 import { OrderConfirmation } from "@/components/OrderConfirmation";
 import { db } from "@/lib/db";
 
-export default async function OrderPage(props: PageProps<"/order/[reference]">) {
-  const { reference } = await props.params;
+export default async function OrderPage({
+  params,
+}: {
+  params: Promise<{ reference: string }>;
+}) {
+  const { reference } = await params;
 
   const order = await db.order.findUnique({
     where: { reference },
