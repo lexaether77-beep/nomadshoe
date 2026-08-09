@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import type { Order, OrderItem } from "@/generated/prisma/client";
 import { getColorway } from "@/lib/colorways";
 
-const FROM = "KLΘT <preorders@klotworld.com>";
+const FROM = "KLΘT <orders@nomad.klotworld.com>";
 
 type OrderWithItems = Order & { items: OrderItem[] };
 
