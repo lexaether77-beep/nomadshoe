@@ -24,7 +24,7 @@ export default async function AdminPage() {
     }, {});
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-16">
+    <main id="main-content" className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-6 py-16">
       <div className="flex items-baseline justify-between">
         <h1 className="font-display text-2xl font-bold">KLΘT Orders</h1>
         <div className="flex items-center gap-4">

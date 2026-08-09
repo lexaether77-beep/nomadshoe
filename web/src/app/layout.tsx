@@ -36,6 +36,12 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${chakraPetch.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-void text-foreground">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-lg focus:bg-foreground focus:px-4 focus:py-2 focus:font-technical focus:text-sm focus:font-medium focus:text-void"
+        >
+          Skip to main content
+        </a>
         {children}
       </body>
     </html>

@@ -43,6 +43,7 @@ export function ProductView({
   const [size, setSize] = useState<number | null>(null);
   const [showSizePrompt, setShowSizePrompt] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
   const addItem = useCartStore((state) => state.addItem);
 
   function selectColorway(next: Colorway) {
@@ -54,11 +55,13 @@ export function ProductView({
   function handleAddToCart() {
     if (size === null) {
       setShowSizePrompt(true);
+      setAnnouncement("Please select a size before adding to cart.");
       return;
     }
     addItem(colorway.slug, size);
     setShowSizePrompt(false);
     setJustAdded(true);
+    setAnnouncement(`${colorway.name}, EU ${size} added to cart.`);
     window.setTimeout(() => setJustAdded(false), 1600);
   }
 
@@ -167,7 +170,7 @@ export function ProductView({
         </div>
 
         {/* Size selector */}
-        <div className="mt-8">
+        <div id="buy" className="mt-8 scroll-mt-24">
           <div className="flex items-baseline justify-between">
             <p className="font-technical text-xs tracking-[0.2em] text-muted uppercase">
               Size (EU)
@@ -206,6 +209,12 @@ export function ProductView({
         >
           {justAdded ? "Added to Cart" : "Add to Cart"}
         </button>
+        <p className="mt-3 text-center font-technical text-xs text-muted">
+          Estimated delivery: October 2026 &middot; Full preorder payment
+        </p>
+        <p role="status" aria-live="polite" className="sr-only">
+          {announcement}
+        </p>
 
         {/* Spec sheet */}
         <div className="mt-12 rounded-2xl bg-surface p-6 ring-1 ring-line">

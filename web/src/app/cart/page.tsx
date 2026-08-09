@@ -17,7 +17,7 @@ export default function CartPage() {
   return (
     <>
       <Header />
-      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 pt-28 pb-24">
+      <main id="main-content" className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 pt-28 pb-24">
         <h1 className="font-display text-3xl font-bold tracking-tight">
           Your Cart
         </h1>

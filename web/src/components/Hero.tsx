@@ -95,7 +95,7 @@ export function Hero() {
 
         <motion.a
           variants={fadeUp}
-          href="/nomad"
+          href="/nomad#buy"
           className="mt-10 rounded-full bg-gold px-8 py-3 font-technical text-sm font-medium tracking-wide text-void transition-transform hover:scale-105"
         >
           Preorder the Nomad

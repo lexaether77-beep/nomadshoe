@@ -21,7 +21,7 @@ export default async function OrderPage({
   return (
     <>
       <Header />
-      <main className="flex flex-1 flex-col">
+      <main id="main-content" className="flex flex-1 flex-col">
         <OrderConfirmation
           reference={order.reference}
           initialStatus={order.status}

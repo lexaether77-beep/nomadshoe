@@ -19,7 +19,7 @@ export function Header() {
         </Link>
         <CartBadge />
         <Link
-          href="/nomad"
+          href="/nomad#buy"
           className="rounded-full bg-foreground px-5 py-2 font-technical text-sm font-medium text-void transition-transform hover:scale-105"
         >
           Preorder
