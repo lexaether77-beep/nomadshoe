@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { colorways, getColorway, type Colorway, type ColorwaySlug } from "@/lib/colorways";
 import { nomadMeta, nomadSizesEU, nomadSpecs } from "@/lib/specs";
@@ -211,6 +212,10 @@ export function ProductView({
         </button>
         <p className="mt-3 text-center font-technical text-xs text-muted">
           Estimated delivery: October 2026 &middot; Full preorder payment
+          &middot;{" "}
+          <Link href="/terms" className="text-gold hover:underline">
+            Preorder terms
+          </Link>
         </p>
         <p role="status" aria-live="polite" className="sr-only">
           {announcement}
