@@ -23,7 +23,6 @@ export function ColorwayTeaser() {
           >
             <div className="transition-transform duration-500 group-hover:scale-[1.02]">
               <ProductStage
-                colorway={cw}
                 image={cw.images.sideA}
                 alt={`KLOT NOMAD, ${cw.name} colorway`}
               />

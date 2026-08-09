@@ -42,7 +42,17 @@ export async function POST(request: Request) {
       data: { status: "PAID", flutterwaveTxId: String(transactionId) },
       include: { items: true },
     });
-    await sendOrderConfirmation(updated);
+    const sent = await sendOrderConfirmation(updated);
+    await db.message.create({
+      data: {
+        orderId: updated.id,
+        kind: "ORDER_CONFIRMED",
+        toEmail: updated.email,
+        subject: `Your KLΘT NOMAD preorder is confirmed — ${updated.reference}`,
+        body: "(order confirmation)",
+        delivered: sent,
+      },
+    });
   } else {
     await db.order.update({
       where: { id: order.id },

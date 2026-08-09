@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { getColorway } from "@/lib/colorways";
+import { OrderRowActions } from "@/components/admin/OrderRowActions";
 
 const STATUS_COLOR: Record<string, string> = {
   PAID: "text-gold",
@@ -11,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
   const orders = await db.order.findMany({
-    include: { items: true },
+    include: { items: true, messages: true },
     orderBy: { createdAt: "desc" },
   });
 
@@ -32,7 +33,7 @@ export default async function AdminPage() {
       </div>
 
       <div className="mt-10 overflow-x-auto rounded-2xl ring-1 ring-line">
-        <table className="w-full min-w-[900px] border-collapse text-left text-sm">
+        <table className="w-full min-w-[1100px] border-collapse text-left text-sm">
           <thead>
             <tr className="border-b border-line font-technical text-xs tracking-wide text-muted uppercase">
               <th className="px-4 py-3">Reference</th>
@@ -41,11 +42,12 @@ export default async function AdminPage() {
               <th className="px-4 py-3">Items</th>
               <th className="px-4 py-3">Total</th>
               <th className="px-4 py-3">Placed</th>
+              <th className="px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
-              <tr key={order.id} className="border-b border-line last:border-none">
+              <tr key={order.id} className="border-b border-line align-top last:border-none">
                 <td className="px-4 py-3 font-technical">{order.reference}</td>
                 <td className={`px-4 py-3 font-technical ${STATUS_COLOR[order.status] ?? ""}`}>
                   {order.status}
@@ -70,11 +72,26 @@ export default async function AdminPage() {
                 <td className="px-4 py-3 text-xs text-muted">
                   {order.createdAt.toLocaleString()}
                 </td>
+                <td className="px-4 py-3">
+                  <OrderRowActions
+                    orderId={order.id}
+                    email={order.email}
+                    isPaid={order.status === "PAID"}
+                    shippedAt={order.shippedAt?.toISOString() ?? null}
+                    messages={order.messages.map((m) => ({
+                      id: m.id,
+                      kind: m.kind,
+                      subject: m.subject,
+                      sentAt: m.sentAt.toISOString(),
+                      delivered: m.delivered,
+                    }))}
+                  />
+                </td>
               </tr>
             ))}
             {orders.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-10 text-center text-muted">
+                <td colSpan={7} className="px-4 py-10 text-center text-muted">
                   No orders yet.
                 </td>
               </tr>

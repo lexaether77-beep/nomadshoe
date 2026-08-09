@@ -45,7 +45,6 @@ export default function CartPage() {
                   >
                     <div className="w-28 shrink-0">
                       <ProductStage
-                        colorway={colorway}
                         image={colorway.images.sideA}
                         alt={`KLOT NOMAD, ${colorway.name}`}
                       />

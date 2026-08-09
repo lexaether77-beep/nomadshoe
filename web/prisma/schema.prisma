@@ -36,8 +36,10 @@ model Order {
   country  String
 
   flutterwaveTxId String?
+  shippedAt       DateTime?
 
-  items OrderItem[]
+  items    OrderItem[]
+  messages Message[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -54,4 +56,26 @@ model OrderItem {
   size         Int
   quantity     Int
   unitPriceUSD Int
+}
+
+enum MessageKind {
+  CUSTOM
+  ORDER_CONFIRMED
+  ORDER_SHIPPED
+}
+
+model Message {
+  id      String  @id @default(cuid())
+  orderId String?
+  order   Order?  @relation(fields: [orderId], references: [id])
+
+  kind      MessageKind
+  toEmail   String
+  subject   String
+  body      String
+  delivered Boolean @default(false)
+
+  sentAt DateTime @default(now())
+
+  @@index([toEmail])
 }

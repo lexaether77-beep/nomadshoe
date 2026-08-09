@@ -75,7 +75,6 @@ export function ProductView({
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           >
             <ProductStage
-              colorway={colorway}
               image={colorway.images[activeImage]}
               alt={`KLOT NOMAD, ${colorway.name}, ${IMAGE_LABELS[activeImage]} view`}
               priority
