@@ -52,48 +52,90 @@ export default function CheckoutPage() {
             <input type="hidden" name="currency" value={currency} />
 
             <div className="flex flex-col gap-4">
-              <p className="font-technical text-xs tracking-[0.2em] text-muted uppercase">
+              <p
+                id="checkout-heading"
+                className="font-technical text-xs tracking-[0.2em] text-muted uppercase"
+              >
                 Contact &amp; Shipping
               </p>
+
+              <label htmlFor="fullName" className="sr-only">
+                Full name
+              </label>
               <input
+                id="fullName"
                 name="fullName"
                 placeholder="Full name"
+                autoComplete="name"
                 required
                 className={inputClass}
               />
+
+              <label htmlFor="email" className="sr-only">
+                Email
+              </label>
               <input
+                id="email"
                 name="email"
                 type="email"
                 placeholder="Email"
+                autoComplete="email"
                 required
                 className={inputClass}
               />
+
+              <label htmlFor="phone" className="sr-only">
+                Phone number
+              </label>
               <input
+                id="phone"
                 name="phone"
                 type="tel"
                 placeholder="Phone number"
+                autoComplete="tel"
                 required
                 className={inputClass}
               />
+
+              <label htmlFor="address" className="sr-only">
+                Shipping address
+              </label>
               <input
+                id="address"
                 name="address"
                 placeholder="Shipping address"
+                autoComplete="street-address"
                 required
                 className={inputClass}
               />
+
               <div className="grid grid-cols-2 gap-4">
-                <input
-                  name="city"
-                  placeholder="City"
-                  required
-                  className={inputClass}
-                />
-                <input
-                  name="country"
-                  placeholder="Country"
-                  required
-                  className={inputClass}
-                />
+                <div>
+                  <label htmlFor="city" className="sr-only">
+                    City
+                  </label>
+                  <input
+                    id="city"
+                    name="city"
+                    placeholder="City"
+                    autoComplete="address-level2"
+                    required
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="country" className="sr-only">
+                    Country
+                  </label>
+                  <input
+                    id="country"
+                    name="country"
+                    placeholder="Country"
+                    autoComplete="country-name"
+                    required
+                    className={inputClass}
+                  />
+                </div>
               </div>
 
               <p className="mt-4 font-technical text-xs tracking-[0.2em] text-muted uppercase">
@@ -122,7 +164,11 @@ export default function CheckoutPage() {
               )}
 
               {state?.error && (
-                <p className="font-technical text-sm text-solar">
+                <p
+                  role="alert"
+                  aria-live="polite"
+                  className="font-technical text-sm text-solar"
+                >
                   {state.error}
                 </p>
               )}
