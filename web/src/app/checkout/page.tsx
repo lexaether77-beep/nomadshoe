@@ -97,15 +97,26 @@ export default function CheckoutPage() {
                 className={inputClass}
               />
 
-              <label htmlFor="address" className="sr-only">
-                Shipping address
+              <label htmlFor="addressLine1" className="sr-only">
+                Address line 1
               </label>
               <input
-                id="address"
-                name="address"
-                placeholder="Shipping address"
-                autoComplete="street-address"
+                id="addressLine1"
+                name="addressLine1"
+                placeholder="Address line 1"
+                autoComplete="address-line1"
                 required
+                className={inputClass}
+              />
+
+              <label htmlFor="addressLine2" className="sr-only">
+                Address line 2 (optional)
+              </label>
+              <input
+                id="addressLine2"
+                name="addressLine2"
+                placeholder="Address line 2 (apartment, suite, etc. — optional)"
+                autoComplete="address-line2"
                 className={inputClass}
               />
 
@@ -120,6 +131,34 @@ export default function CheckoutPage() {
                     placeholder="City"
                     autoComplete="address-level2"
                     required
+                    className={inputClass}
+                  />
+                </div>
+                <div>
+                  <label htmlFor="state" className="sr-only">
+                    State / Region
+                  </label>
+                  <input
+                    id="state"
+                    name="state"
+                    placeholder="State / Region"
+                    autoComplete="address-level1"
+                    required
+                    className={inputClass}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="postalCode" className="sr-only">
+                    Postal code (optional)
+                  </label>
+                  <input
+                    id="postalCode"
+                    name="postalCode"
+                    placeholder="Postal code (optional)"
+                    autoComplete="postal-code"
                     className={inputClass}
                   />
                 </div>

@@ -15,8 +15,11 @@ const checkoutSchema = z.object({
   fullName: z.string().min(2, "Enter your full name"),
   email: z.string().email("Enter a valid email"),
   phone: z.string().min(6, "Enter a valid phone number"),
-  address: z.string().min(4, "Enter your shipping address"),
+  addressLine1: z.string().min(4, "Enter your shipping address"),
+  addressLine2: z.string().optional(),
   city: z.string().min(2, "Enter your city"),
+  state: z.string().min(2, "Enter your state or region"),
+  postalCode: z.string().optional(),
   country: z.string().min(2, "Enter your country"),
   currency: z.enum(["USD", "NGN"]),
 });
@@ -67,8 +70,11 @@ export async function createOrder(
       fullName: parsed.data.fullName,
       email: parsed.data.email,
       phone: parsed.data.phone,
-      address: parsed.data.address,
+      addressLine1: parsed.data.addressLine1,
+      addressLine2: parsed.data.addressLine2 || null,
       city: parsed.data.city,
+      state: parsed.data.state,
+      postalCode: parsed.data.postalCode || null,
       country: parsed.data.country,
       items: {
         create: cartItems.map((item) => ({

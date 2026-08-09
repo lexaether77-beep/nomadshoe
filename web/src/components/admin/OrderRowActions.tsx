@@ -2,7 +2,11 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { markOrderShipped, sendCustomMessage } from "@/lib/admin-actions";
+import {
+  markOrderShipped,
+  sendCustomMessage,
+  getMessageTemplate,
+} from "@/lib/admin-actions";
 
 type MessageSummary = {
   id: string;
@@ -60,6 +64,15 @@ export function OrderRowActions({
     });
   }
 
+  function applyTemplate(template: "ORDER_CONFIRMED" | "ORDER_SHIPPED") {
+    startTransition(async () => {
+      const t = await getMessageTemplate(orderId, template);
+      setSubject(t.subject);
+      setBody(t.body);
+      setStatus(null);
+    });
+  }
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
@@ -113,6 +126,24 @@ export function OrderRowActions({
 
       {showCompose && (
         <div className="flex flex-col gap-2 rounded-lg bg-void p-3 ring-1 ring-line">
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => applyTemplate("ORDER_CONFIRMED")}
+              disabled={isPending}
+              className="rounded-full px-2 py-0.5 font-technical text-[10px] tracking-wide text-muted uppercase ring-1 ring-line hover:text-foreground hover:ring-muted"
+            >
+              Template: Confirmed
+            </button>
+            <button
+              type="button"
+              onClick={() => applyTemplate("ORDER_SHIPPED")}
+              disabled={isPending}
+              className="rounded-full px-2 py-0.5 font-technical text-[10px] tracking-wide text-muted uppercase ring-1 ring-line hover:text-foreground hover:ring-muted"
+            >
+              Template: Shipped
+            </button>
+          </div>
           <input
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
@@ -123,7 +154,7 @@ export function OrderRowActions({
             value={body}
             onChange={(e) => setBody(e.target.value)}
             placeholder="Message"
-            rows={3}
+            rows={6}
             className="rounded bg-surface px-2 py-1.5 text-xs ring-1 ring-line focus:outline-none"
           />
           <button

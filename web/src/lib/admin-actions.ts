@@ -3,7 +3,12 @@
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
-import { sendOrderShipped, sendCustomEmail } from "@/lib/email";
+import {
+  sendOrderShipped,
+  sendCustomEmail,
+  buildOrderConfirmationEmail,
+  buildOrderShippedEmail,
+} from "@/lib/email";
 
 async function requireAdmin() {
   const user = process.env.ADMIN_USER;
@@ -30,6 +35,7 @@ export async function markOrderShipped(orderId: string) {
     include: { items: true },
   });
 
+  const { subject, body } = buildOrderShippedEmail(order);
   const sent = await sendOrderShipped(order);
 
   await db.message.create({
@@ -37,8 +43,8 @@ export async function markOrderShipped(orderId: string) {
       orderId: order.id,
       kind: "ORDER_SHIPPED",
       toEmail: order.email,
-      subject: `Your KLΘT NOMAD has shipped — ${order.reference}`,
-      body: "(shipping notification)",
+      subject,
+      body,
       delivered: sent,
     },
   });
@@ -73,4 +79,20 @@ export async function sendCustomMessage(
 
   revalidatePath("/admin");
   return { sent };
+}
+
+export async function getMessageTemplate(
+  orderId: string,
+  template: "ORDER_CONFIRMED" | "ORDER_SHIPPED"
+) {
+  await requireAdmin();
+
+  const order = await db.order.findUniqueOrThrow({
+    where: { id: orderId },
+    include: { items: true },
+  });
+
+  return template === "ORDER_CONFIRMED"
+    ? buildOrderConfirmationEmail(order)
+    : buildOrderShippedEmail(order);
 }

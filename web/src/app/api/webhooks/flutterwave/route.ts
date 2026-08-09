@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { verifyTransaction } from "@/lib/flutterwave";
-import { sendOrderConfirmation } from "@/lib/email";
+import { sendOrderConfirmation, buildOrderConfirmationEmail } from "@/lib/email";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("verif-hash");
@@ -42,14 +42,15 @@ export async function POST(request: Request) {
       data: { status: "PAID", flutterwaveTxId: String(transactionId) },
       include: { items: true },
     });
+    const { subject, body } = buildOrderConfirmationEmail(updated);
     const sent = await sendOrderConfirmation(updated);
     await db.message.create({
       data: {
         orderId: updated.id,
         kind: "ORDER_CONFIRMED",
         toEmail: updated.email,
-        subject: `Your KLΘT NOMAD preorder is confirmed — ${updated.reference}`,
-        body: "(order confirmation)",
+        subject,
+        body,
         delivered: sent,
       },
     });
