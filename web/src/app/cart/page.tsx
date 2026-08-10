@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProductStage } from "@/components/ProductStage";
@@ -13,6 +14,10 @@ export default function CartPage() {
   const setQuantity = useCartStore((state) => state.setQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
   const subtotal = cartSubtotalUSD(items);
+
+  function handleCheckoutClick() {
+    track("checkout_started", { itemCount: items.length, subtotalUSD: subtotal });
+  }
 
   return (
     <>
@@ -126,6 +131,7 @@ export default function CartPage() {
 
             <Link
               href="/checkout"
+              onClick={handleCheckoutClick}
               className="mt-6 rounded-full bg-foreground py-4 text-center font-technical text-sm font-medium text-void transition-transform hover:scale-[1.01]"
             >
               Proceed to Checkout

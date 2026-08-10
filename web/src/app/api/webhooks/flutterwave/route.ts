@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { track } from "@vercel/analytics/server";
 import { db } from "@/lib/db";
 import { verifyTransaction } from "@/lib/flutterwave";
 import { sendOrderConfirmation, buildOrderConfirmationEmail } from "@/lib/email";
@@ -54,6 +55,11 @@ export async function POST(request: Request) {
         delivered: sent,
       },
     });
+    await track(
+      "purchase_completed",
+      { currency: updated.currency, amount: Number(updated.amount) },
+      { headers: request.headers }
+    );
   } else {
     await db.order.update({
       where: { id: order.id },

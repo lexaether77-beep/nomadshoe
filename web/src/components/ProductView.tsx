@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { track } from "@vercel/analytics";
 import { colorways, getColorway, type Colorway, type ColorwaySlug } from "@/lib/colorways";
 import { nomadMeta, nomadSizesEU, nomadSpecs } from "@/lib/specs";
 import { useCartStore } from "@/lib/cart-store";
@@ -58,6 +59,13 @@ export function ProductView({
     if (next.slug === colorway.slug) return;
     setColorway(next);
     setActiveImage("sideA");
+    track("colorway_selected", { colorway: next.slug });
+  }
+
+  function selectSize(s: number) {
+    setSize(s);
+    setShowSizePrompt(false);
+    track("size_selected", { size: s });
   }
 
   function handleAddToCart() {
@@ -70,6 +78,7 @@ export function ProductView({
     setShowSizePrompt(false);
     setJustAdded(true);
     setAnnouncement(`${colorway.name}, EU ${size} added to cart.`);
+    track("add_to_cart", { colorway: colorway.slug, size });
     window.setTimeout(() => setJustAdded(false), 1600);
   }
 
@@ -241,10 +250,7 @@ export function ProductView({
               <button
                 key={s}
                 type="button"
-                onClick={() => {
-                  setSize(s);
-                  setShowSizePrompt(false);
-                }}
+                onClick={() => selectSize(s)}
                 aria-pressed={size === s}
                 aria-label={`EU size ${s}`}
                 className={`min-h-11 rounded-lg py-2 font-technical text-sm ring-1 transition-colors ${
