@@ -246,6 +246,10 @@ export default function CheckoutPage() {
                     </div>
                   );
                 })}
+                <div className="flex items-baseline justify-between text-sm">
+                  <span>1 &times; KLΘT 5-finger socks</span>
+                  <span className="font-technical text-gold-ink">Free</span>
+                </div>
               </div>
               <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
                 <span className="font-technical text-sm text-muted">
