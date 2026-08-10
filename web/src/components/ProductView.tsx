@@ -9,6 +9,7 @@ import { colorways, getColorway, type Colorway, type ColorwaySlug } from "@/lib/
 import { nomadMeta, nomadSizesEU, nomadSpecs } from "@/lib/specs";
 import { useCartStore } from "@/lib/cart-store";
 import { ProductStage } from "@/components/ProductStage";
+import { joinWaitlist } from "@/lib/waitlist-actions";
 
 const ACCENT_RING: Record<Colorway["accent"], string> = {
   gold: "ring-gold",
@@ -51,6 +52,11 @@ export function ProductView({
   const [justAdded, setJustAdded] = useState(false);
   const [announcement, setAnnouncement] = useState("");
   const [showStickyBar, setShowStickyBar] = useState(false);
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistStatus, setWaitlistStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [waitlistError, setWaitlistError] = useState("");
   const addItem = useCartStore((state) => state.addItem);
   const touchStartX = useRef<number | null>(null);
   const mainCtaRef = useRef<HTMLButtonElement>(null);
@@ -80,6 +86,20 @@ export function ProductView({
     setAnnouncement(`${colorway.name}, EU ${size} added to cart.`);
     track("add_to_cart", { colorway: colorway.slug, size });
     window.setTimeout(() => setJustAdded(false), 1600);
+  }
+
+  async function handleWaitlistSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setWaitlistStatus("loading");
+    setWaitlistError("");
+    const result = await joinWaitlist(waitlistEmail, "nomad_product_page");
+    if (result.ok) {
+      setWaitlistStatus("success");
+      track("waitlist_signup", { source: "nomad_product_page" });
+    } else {
+      setWaitlistStatus("error");
+      setWaitlistError(result.error ?? "Something went wrong. Try again.");
+    }
   }
 
   function handleTouchStart(e: React.TouchEvent) {
@@ -286,6 +306,42 @@ export function ProductView({
         <p role="status" aria-live="polite" className="sr-only">
           {announcement}
         </p>
+
+        {/* Waitlist capture for non-converting visitors */}
+        <div className="mt-6 border-t border-line pt-6">
+          {waitlistStatus === "success" ? (
+            <p className="text-center font-technical text-xs text-muted">
+              You&rsquo;re on the list &mdash; we&rsquo;ll email you when NOMAD ships.
+            </p>
+          ) : (
+            <form
+              onSubmit={handleWaitlistSubmit}
+              className="flex flex-col gap-2 sm:flex-row"
+            >
+              <input
+                type="email"
+                required
+                value={waitlistEmail}
+                onChange={(e) => setWaitlistEmail(e.target.value)}
+                placeholder="Not ready? Get notified when NOMAD ships"
+                aria-label="Email address"
+                className="min-h-11 flex-1 rounded-full bg-surface px-4 font-technical text-sm ring-1 ring-line placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-gold"
+              />
+              <button
+                type="submit"
+                disabled={waitlistStatus === "loading"}
+                className="min-h-11 shrink-0 rounded-full bg-surface px-5 font-technical text-sm font-medium ring-1 ring-line transition-colors hover:ring-muted disabled:opacity-60"
+              >
+                {waitlistStatus === "loading" ? "Adding…" : "Notify Me"}
+              </button>
+            </form>
+          )}
+          {waitlistStatus === "error" && (
+            <p role="alert" className="mt-2 text-center font-technical text-xs text-solar-ink">
+              {waitlistError}
+            </p>
+          )}
+        </div>
 
         {/* Spec sheet */}
         <div className="mt-12 rounded-2xl bg-surface p-6 ring-1 ring-line">
