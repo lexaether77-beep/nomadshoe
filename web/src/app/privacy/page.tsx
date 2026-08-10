@@ -36,6 +36,10 @@ export default function PrivacyPage() {
               payments are handled directly by Flutterwave, our payment
               processor.
             </p>
+            <p className="mt-2">
+              If you join the waitlist instead of ordering, we collect just
+              your email address.
+            </p>
           </section>
 
           <section>
@@ -47,6 +51,12 @@ export default function PrivacyPage() {
               shipping confirmation emails, and respond if you contact us. We
               don&rsquo;t use your information for anything beyond that.
             </p>
+            <p className="mt-2">
+              If you&rsquo;re on the waitlist, we&rsquo;ll email you updates
+              about the NOMAD launch. You can unsubscribe or ask us to delete
+              your email at any time &mdash; see &ldquo;Your rights&rdquo;
+              below.
+            </p>
           </section>
 
           <section>
@@ -55,8 +65,8 @@ export default function PrivacyPage() {
             </h2>
             <p className="mt-2">
               Flutterwave (to process payment) and Resend (to deliver order
-              emails). We don&rsquo;t sell your data or share it with anyone
-              else.
+              and waitlist emails). We don&rsquo;t sell your data or share it
+              with anyone else.
             </p>
           </section>
 

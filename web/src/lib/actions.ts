@@ -6,10 +6,11 @@ import { z } from "zod";
 import { db } from "@/lib/db";
 import { initializePayment } from "@/lib/flutterwave";
 import { getUsdToNgnRate } from "@/lib/fx";
-import { nomadMeta } from "@/lib/specs";
+import { nomadMeta, nomadSizeScale } from "@/lib/specs";
 import { colorways } from "@/lib/colorways";
 
 const colorwaySlugs = colorways.map((c) => c.slug) as [string, ...string[]];
+const sizeLabels = nomadSizeScale as unknown as [string, ...string[]];
 
 const checkoutSchema = z.object({
   fullName: z.string().min(2, "Enter your full name"),
@@ -26,7 +27,7 @@ const checkoutSchema = z.object({
 
 const cartItemSchema = z.object({
   colorwaySlug: z.enum(colorwaySlugs),
-  size: z.number().int().min(35).max(46),
+  size: z.enum(sizeLabels),
   quantity: z.number().int().min(1).max(10),
 });
 

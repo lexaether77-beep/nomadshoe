@@ -56,7 +56,7 @@ model OrderItem {
   order   Order  @relation(fields: [orderId], references: [id])
 
   colorwaySlug String
-  size         Int
+  size         String
   quantity     Int
   unitPriceUSD Int
 }

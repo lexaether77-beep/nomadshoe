@@ -6,7 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { track } from "@vercel/analytics";
 import { colorways, getColorway, type Colorway, type ColorwaySlug } from "@/lib/colorways";
-import { nomadMeta, nomadSizesEU, nomadSpecs } from "@/lib/specs";
+import { nomadMeta, nomadSizeScale, nomadSpecs } from "@/lib/specs";
 import { useCartStore } from "@/lib/cart-store";
 import { ProductStage } from "@/components/ProductStage";
 import { joinWaitlist } from "@/lib/waitlist-actions";
@@ -47,7 +47,7 @@ export function ProductView({
     getColorway(initialColorwaySlug) ?? colorways[0]
   );
   const [activeImage, setActiveImage] = useState<ImageKey>("sideA");
-  const [size, setSize] = useState<number | null>(null);
+  const [size, setSize] = useState<string | null>(null);
   const [showSizePrompt, setShowSizePrompt] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
   const [announcement, setAnnouncement] = useState("");
@@ -68,7 +68,7 @@ export function ProductView({
     track("colorway_selected", { colorway: next.slug });
   }
 
-  function selectSize(s: number) {
+  function selectSize(s: string) {
     setSize(s);
     setShowSizePrompt(false);
     track("size_selected", { size: s });
@@ -265,8 +265,8 @@ export function ProductView({
               </span>
             )}
           </div>
-          <div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-6">
-            {nomadSizesEU.map((s) => (
+          <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-6">
+            {nomadSizeScale.map((s) => (
               <button
                 key={s}
                 type="button"

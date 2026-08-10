@@ -5,15 +5,15 @@ import { nomadMeta } from "@/lib/specs";
 
 export type CartItem = {
   colorwaySlug: ColorwaySlug;
-  size: number;
+  size: string;
   quantity: number;
 };
 
 type CartState = {
   items: CartItem[];
-  addItem: (colorwaySlug: ColorwaySlug, size: number) => void;
-  removeItem: (colorwaySlug: ColorwaySlug, size: number) => void;
-  setQuantity: (colorwaySlug: ColorwaySlug, size: number, quantity: number) => void;
+  addItem: (colorwaySlug: ColorwaySlug, size: string) => void;
+  removeItem: (colorwaySlug: ColorwaySlug, size: string) => void;
+  setQuantity: (colorwaySlug: ColorwaySlug, size: string, quantity: number) => void;
   clear: () => void;
 };
 

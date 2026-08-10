@@ -10,6 +10,22 @@ export function Footer() {
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-technical text-xs tracking-wide text-muted uppercase">
           <a
+            href="https://klotworld.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground"
+          >
+            KLΘT Worx
+          </a>
+          <a
+            href="https://instagram.com/klotlife"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground"
+          >
+            @klotlife
+          </a>
+          <a
             href="mailto:hello@klotworld.com"
             className="hover:text-foreground"
           >

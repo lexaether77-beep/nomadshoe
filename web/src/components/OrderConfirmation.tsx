@@ -9,7 +9,7 @@ import { useCartStore } from "@/lib/cart-store";
 
 type OrderItem = {
   colorwaySlug: string;
-  size: number;
+  size: string;
   quantity: number;
 };
 

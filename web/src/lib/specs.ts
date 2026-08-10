@@ -14,13 +14,20 @@ export const nomadMeta = {
   model: "NOMAD",
   category: "Barefoot / Lifestyle / Outdoor",
   gender: "Unisex",
-  sizeRange: "EU 35–46",
+  sizeRange: "EU 35–45",
   sku: "KLT-NMD-BGP-001",
   release: "October 2026",
   origin: "Lagos, Nigeria",
   priceUSD: 135,
 } as const;
 
-export const nomadSizesEU = [
-  35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
+/** KLΘT NOMAD ships on a 2-size scale — each mold covers a pair of
+ * consecutive EU sizes. These labels match the printed size chart. */
+export const nomadSizeScale = [
+  "35/36",
+  "37/38",
+  "39/40",
+  "41/42",
+  "43/44",
+  "45/45",
 ] as const;

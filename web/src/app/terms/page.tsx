@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
@@ -108,9 +109,14 @@ export default function TermsPage() {
               Sizing
             </h2>
             <p className="mt-2">
-              NOMAD is a five-toe, zero-drop barefoot shoe sized in EU 35
-              &ndash;46. If you&rsquo;re unsure of your size, email us before
-              ordering and we&rsquo;ll help you figure it out.
+              NOMAD is a five-toe, zero-drop barefoot shoe sized on a 2-size
+              scale from EU 35/36 to 45/45 &mdash; each mold covers two
+              consecutive sizes. If you&rsquo;re unsure of your size, see the{" "}
+              <Link href="/size-guide" className="text-gold-ink hover:underline">
+                size guide
+              </Link>{" "}
+              or email us before ordering and we&rsquo;ll help you figure it
+              out.
             </p>
           </section>
 
