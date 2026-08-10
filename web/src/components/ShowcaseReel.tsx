@@ -6,7 +6,7 @@ export function ShowcaseReel() {
           Field Notes
         </p>
         <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
-          Engineered in Lagos
+          Engineered for those that want to explore
         </h2>
       </div>
 
