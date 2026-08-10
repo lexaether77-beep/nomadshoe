@@ -28,7 +28,7 @@ export default function SizeGuidePage() {
           NOMAD runs on a two-size scale &mdash; each mold covers two
           consecutive EU sizes for the best balance of fit and comfort.
           Measure your foot length and match it against the chart below. If
-          you fall between sizes, we advise sizing down.
+          you fall between sizes, we recommend sizing down.
         </p>
 
         <div className="mt-10 overflow-hidden rounded-2xl ring-1 ring-line">

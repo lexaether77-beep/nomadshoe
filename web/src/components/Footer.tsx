@@ -18,12 +18,12 @@ export function Footer() {
             KLΘT Worx
           </a>
           <a
-            href="https://instagram.com/klotlife"
+            href="https://instagram.com/klotworld"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground"
           >
-            @klotlife
+            @klotworld
           </a>
           <a
             href="mailto:hello@klotworld.com"
