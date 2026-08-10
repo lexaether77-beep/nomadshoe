@@ -7,6 +7,8 @@ export type Colorway = {
   /** Tailwind token suffix, e.g. "gold" -> bg-gold, text-gold, etc. */
   accent: "gold" | "cobalt" | "solar";
   accentGlowVar: string;
+  /** Tailwind bg class for the colorway swatch — the shoe's actual body color. */
+  swatchClass: string;
   images: {
     top: string;
     sole: string;
@@ -33,6 +35,7 @@ export const colorways: Colorway[] = [
     tagline: "Gold-etched, night-forged",
     accent: "gold",
     accentGlowVar: "var(--gold-glow)",
+    swatchClass: "bg-foreground",
     images: imagesFor("obsidian"),
   },
   {
@@ -41,6 +44,7 @@ export const colorways: Colorway[] = [
     tagline: "Deep signal, ember toe",
     accent: "cobalt",
     accentGlowVar: "var(--cobalt-glow)",
+    swatchClass: "bg-cobalt",
     images: imagesFor("cobalt-current"),
   },
   {
@@ -49,6 +53,7 @@ export const colorways: Colorway[] = [
     tagline: "High-noon, verdant edge",
     accent: "solar",
     accentGlowVar: "var(--solar-glow)",
+    swatchClass: "bg-solar",
     images: imagesFor("solar"),
   },
 ];

@@ -242,7 +242,7 @@ export function ProductView({
                 onClick={() => selectColorway(cw)}
                 aria-label={cw.name}
                 aria-pressed={colorway.slug === cw.slug}
-                className={`h-10 w-10 rounded-full ${ACCENT_BG[cw.accent]} ring-2 ring-offset-2 ring-offset-void transition-all ${
+                className={`h-10 w-10 rounded-full ${cw.swatchClass} ring-2 ring-offset-2 ring-offset-void transition-all ${
                   colorway.slug === cw.slug ? ACCENT_RING[cw.accent] : "ring-transparent"
                 }`}
               />
