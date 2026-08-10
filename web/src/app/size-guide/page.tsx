@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Size Guide — KLΘT NOMAD",
   description:
     "Find your KLΘT NOMAD size — measurement instructions and a US/UK/EU/Asia conversion chart.",
+  alternates: { canonical: "/size-guide" },
 };
 
 export default function SizeGuidePage() {

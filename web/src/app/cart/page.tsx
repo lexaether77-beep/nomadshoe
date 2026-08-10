@@ -130,6 +130,16 @@ export default function CartPage() {
             >
               Proceed to Checkout
             </Link>
+            <p className="mt-4 text-center font-technical text-xs text-muted">
+              Full refund within 10 days &middot; Estimated delivery October
+              2026 &middot; Questions?{" "}
+              <a
+                href="mailto:hello@klotworld.com"
+                className="text-gold-ink hover:underline"
+              >
+                hello@klotworld.com
+              </a>
+            </p>
           </>
         )}
       </main>

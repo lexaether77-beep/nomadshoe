@@ -219,6 +219,9 @@ export default function CheckoutPage() {
               >
                 {pending ? "Starting payment…" : "Pay with Flutterwave"}
               </button>
+              <p className="text-center font-technical text-xs text-muted">
+                Secure checkout via Flutterwave &middot; USD &amp; NGN accepted
+              </p>
             </div>
 
             <div className="h-fit rounded-2xl bg-surface p-6 ring-1 ring-line">

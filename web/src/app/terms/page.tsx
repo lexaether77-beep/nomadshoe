@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Preorder Terms — KLΘT NOMAD",
   description:
     "Payment, cancellation, refund, and delivery terms for the KLΘT NOMAD preorder.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

@@ -20,10 +20,38 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nomad.klotworld.com";
+const defaultTitle = "KLΘT NOMAD — Victory Through Harmony";
+const defaultDescription =
+  "The KLΘT NOMAD barefoot shoe. Zero-drop, five-toe, Nsibidi-inspired. Designed in Lagos. Preorder now.";
+
 export const metadata: Metadata = {
-  title: "KLΘT NOMAD — Victory Through Harmony",
-  description:
-    "The KLΘT NOMAD barefoot shoe. Zero-drop, five-toe, Nsibidi-inspired. Designed in Lagos. Preorder now.",
+  metadataBase: new URL(siteUrl),
+  title: defaultTitle,
+  description: defaultDescription,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: defaultTitle,
+    description: defaultDescription,
+    url: "/",
+    siteName: "KLΘT NOMAD",
+    type: "website",
+    locale: "en_US",
+    images: [
+      {
+        url: "/images/og/obsidian.jpg",
+        width: 1200,
+        height: 630,
+        alt: "KLΘT NOMAD — zero-drop, five-toe barefoot shoe, Obsidian colorway",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultTitle,
+    description: defaultDescription,
+    images: ["/images/og/obsidian.jpg"],
+  },
 };
 
 export default function RootLayout({

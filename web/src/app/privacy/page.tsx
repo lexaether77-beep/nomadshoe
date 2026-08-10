@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Privacy Policy — KLΘT NOMAD",
   description: "What KLΘT collects, how it's used, and your rights over it.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {

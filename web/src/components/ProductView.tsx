@@ -245,6 +245,8 @@ export function ProductView({
                   setSize(s);
                   setShowSizePrompt(false);
                 }}
+                aria-pressed={size === s}
+                aria-label={`EU size ${s}`}
                 className={`min-h-11 rounded-lg py-2 font-technical text-sm ring-1 transition-colors ${
                   size === s
                     ? `${ACCENT_BG[colorway.accent]} text-foreground ring-transparent`
@@ -266,6 +268,9 @@ export function ProductView({
           {justAdded ? "Added to Cart" : "Add to Cart"}
         </button>
         <p className="mt-3 text-center font-technical text-xs text-muted">
+          Secure checkout via Flutterwave &middot; USD &amp; NGN accepted
+        </p>
+        <p className="mt-1 text-center font-technical text-xs text-muted">
           Estimated delivery: October 2026 &middot; Full preorder payment
           &middot;{" "}
           <Link href="/terms" className="text-gold-ink hover:underline">
