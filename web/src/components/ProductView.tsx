@@ -228,6 +228,9 @@ export function ProductView({
             &middot; NGN available at checkout
           </span>
         </p>
+        <p className="mt-2 font-technical text-xs text-gold-ink">
+          Includes a free pair of KLΘT 5-finger socks
+        </p>
 
         {/* Colorway swatches */}
         <div className="mt-8">

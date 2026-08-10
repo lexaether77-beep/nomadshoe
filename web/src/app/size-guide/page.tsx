@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ZoomableImage } from "@/components/ZoomableImage";
 
 export const metadata: Metadata = {
   title: "Size Guide — KLΘT NOMAD",
@@ -28,18 +28,20 @@ export default function SizeGuidePage() {
           NOMAD runs on a two-size scale &mdash; each mold covers two
           consecutive EU sizes for the best balance of fit and comfort.
           Measure your foot length and match it against the chart below. If
-          you fall between sizes, we recommend sizing up.
+          you fall between sizes, we advise sizing down.
         </p>
 
         <div className="mt-10 overflow-hidden rounded-2xl ring-1 ring-line">
-          <Image
+          <ZoomableImage
             src="/images/guides/size-chart.jpg"
             alt="KLΘT NOMAD size chart: EU sizes 35–45 paired in a two-size scale (35/36 through 45/45), with US Men, US Women, UK, and Asia (cm) equivalents. Measure foot length from heel to the tip of the longest toe."
-            width={1080}
-            height={720}
-            className="w-full h-auto"
+            width={1280}
+            height={853}
           />
         </div>
+        <p className="mt-2 text-center font-technical text-xs text-muted">
+          Tap the chart to zoom in
+        </p>
 
         <p className="mt-8 text-sm text-muted leading-relaxed">
           Still unsure? Email{" "}
