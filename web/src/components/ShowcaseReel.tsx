@@ -13,13 +13,16 @@ export function ShowcaseReel() {
       <div className="relative overflow-hidden rounded-2xl bg-surface ring-1 ring-line">
         <video
           className="w-full"
-          src="/video/nomad-reel.mp4"
+          poster="/video/nomad-reel-poster.jpg"
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-        />
+          preload="none"
+        >
+          <source src="/video/nomad-reel.webm" type="video/webm" />
+          <source src="/video/nomad-reel.mp4" type="video/mp4" />
+        </video>
         <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-line" />
       </div>
     </section>
