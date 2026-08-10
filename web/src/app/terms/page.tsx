@@ -94,9 +94,11 @@ export default function TermsPage() {
               Shipping &amp; delivery
             </h2>
             <p className="mt-2">
-              We ship to the address you provide at checkout. You&rsquo;ll
-              receive an email confirmation when your order is placed, and
-              another when it ships.
+              Shipping is included in the preorder price &mdash; there are no
+              additional shipping charges at checkout. We ship to the address
+              you provide at checkout. You&rsquo;ll receive an email
+              confirmation when your order is placed, and another when it
+              ships.
             </p>
           </section>
 

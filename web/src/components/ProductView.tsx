@@ -195,7 +195,8 @@ export function ProductView({
         <p className="mt-6 font-display text-2xl font-medium">
           ${nomadMeta.priceUSD}
           <span className="ml-2 text-sm font-normal text-muted">
-            USD &middot; full preorder payment &middot; NGN available at checkout
+            USD &middot; shipping included &middot; full preorder payment
+            &middot; NGN available at checkout
           </span>
         </p>
 
@@ -224,7 +225,10 @@ export function ProductView({
         <div id="buy" className="mt-8 scroll-mt-24">
           <div className="flex items-baseline justify-between">
             <p className="font-technical text-xs tracking-[0.2em] text-muted uppercase">
-              Size (EU)
+              Size (EU) &middot;{" "}
+              <Link href="/size-guide" className="text-gold-ink normal-case tracking-normal hover:underline">
+                Size Guide
+              </Link>
             </p>
             {showSizePrompt && (
               <span className="font-technical text-xs text-solar-ink">

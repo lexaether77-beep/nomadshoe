@@ -119,7 +119,7 @@ export default function CartPage() {
                 </span>
               </div>
               <p className="font-technical text-xs text-muted">
-                Shipping and NGN conversion (if selected) calculated at
+                Shipping included. NGN conversion (if selected) calculated at
                 checkout.
               </p>
             </div>
