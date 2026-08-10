@@ -1,25 +1,33 @@
 @import "tailwindcss";
 
 /*
-  KLΘT NOMAD design tokens.
-  This is an always-dark, cinematic brand site — it does not adapt to
-  the visitor's OS light/dark preference.
+  KLΘT NOMAD design tokens — "Paper" theme.
+  Warm off-white ground, ink text, hairline dividers. Does not adapt
+  to the visitor's OS light/dark preference — this is the one brand
+  theme.
 */
 :root {
-  --void: #050506;
-  --surface: #0d0d10;
-  --surface-raised: #17171b;
-  --line: #242429;
-  --foreground: #f4f2ec;
-  --muted: #8d8d95;
+  --void: #fbfaf6;
+  --surface: #ffffff;
+  --surface-raised: #f3f1ea;
+  --line: #e6e2d8;
+  --foreground: #17160f;
+  --muted: #7a766c;
 
-  /* Colorway signals, pulled from the product photography */
+  /* Colorway signals, pulled from the product photography.
+     Kept at full strength for swatches/fills/rings — large-area or
+     filled uses don't carry the same contrast burden as text. */
   --gold: #e3b23c;
   --gold-glow: #f7d878;
   --cobalt: #2c5fe0;
   --cobalt-glow: #6ea0ff;
   --solar: #f2a81d;
   --solar-glow: #d8e84a;
+
+  /* Darkened, text-safe variants — the swatch colors above fail AA
+     contrast as text/links on the paper ground. */
+  --gold-ink: #8a6a1e;
+  --solar-ink: #9c5b0a;
 }
 
 @theme inline {
@@ -36,6 +44,8 @@
   --color-cobalt-glow: var(--cobalt-glow);
   --color-solar: var(--solar);
   --color-solar-glow: var(--solar-glow);
+  --color-gold-ink: var(--gold-ink);
+  --color-solar-ink: var(--solar-ink);
 
   --font-display: var(--font-space-grotesk);
   --font-technical: var(--font-chakra-petch);

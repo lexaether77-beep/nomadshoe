@@ -206,7 +206,7 @@ export default function CheckoutPage() {
                 <p
                   role="alert"
                   aria-live="polite"
-                  className="font-technical text-sm text-solar"
+                  className="font-technical text-sm text-solar-ink"
                 >
                   {state.error}
                 </p>
@@ -215,7 +215,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={pending}
-                className="mt-4 rounded-full bg-gold py-4 font-technical text-sm font-medium text-void transition-transform hover:scale-[1.01] disabled:opacity-60"
+                className="mt-4 rounded-full bg-gold py-4 font-technical text-sm font-medium text-foreground transition-transform hover:scale-[1.01] disabled:opacity-60"
               >
                 {pending ? "Starting payment…" : "Pay with Flutterwave"}
               </button>

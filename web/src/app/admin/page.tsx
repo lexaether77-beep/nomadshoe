@@ -3,9 +3,9 @@ import { getColorway } from "@/lib/colorways";
 import { OrderRowActions } from "@/components/admin/OrderRowActions";
 
 const STATUS_COLOR: Record<string, string> = {
-  PAID: "text-gold",
+  PAID: "text-gold-ink",
   PENDING: "text-muted",
-  FAILED: "text-solar",
+  FAILED: "text-solar-ink",
 };
 
 export const dynamic = "force-dynamic";

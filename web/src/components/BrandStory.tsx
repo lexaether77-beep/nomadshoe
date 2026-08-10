@@ -17,7 +17,7 @@ export function BrandStory() {
           symbols inspired by Nsibidi, an ideographic script native to
           southeastern Nigeria, reading:
         </p>
-        <p className="mt-6 font-display text-xl text-gold">
+        <p className="mt-6 font-display text-xl text-gold-ink">
           &ldquo;Time is the Spirit of God.&rdquo;
         </p>
         <p className="mt-6 text-muted leading-relaxed">

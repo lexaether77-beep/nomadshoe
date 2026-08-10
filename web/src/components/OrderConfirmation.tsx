@@ -86,14 +86,7 @@ export function OrderConfirmation({
           sizes="128px"
           className="object-cover"
         />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 70% at center, transparent 0%, var(--void) 92%)",
-            mixBlendMode: "multiply",
-          }}
-        />
+        <div className="pointer-events-none absolute inset-0 ring-1 ring-gold/60" />
       </motion.div>
 
       <motion.div
@@ -135,7 +128,7 @@ export function OrderConfirmation({
             </p>
             <Link
               href="/checkout"
-              className="mt-6 inline-block rounded-full bg-gold px-8 py-3 font-technical text-sm font-medium text-void transition-transform hover:scale-105"
+              className="mt-6 inline-block rounded-full bg-gold px-8 py-3 font-technical text-sm font-medium text-foreground transition-transform hover:scale-105"
             >
               Try Again
             </Link>

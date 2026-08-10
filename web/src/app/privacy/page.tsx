@@ -91,7 +91,7 @@ export default function PrivacyPage() {
               to delete it, at any time by emailing{" "}
               <a
                 href="mailto:hello@klotworld.com"
-                className="text-gold hover:underline"
+                className="text-gold-ink hover:underline"
               >
                 hello@klotworld.com
               </a>
@@ -107,7 +107,7 @@ export default function PrivacyPage() {
               Questions about this policy?{" "}
               <a
                 href="mailto:hello@klotworld.com"
-                className="text-gold hover:underline"
+                className="text-gold-ink hover:underline"
               >
                 hello@klotworld.com
               </a>

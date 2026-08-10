@@ -63,7 +63,7 @@ export default function TermsPage() {
               of placing it. Email{" "}
               <a
                 href="mailto:hello@klotworld.com"
-                className="text-gold hover:underline"
+                className="text-gold-ink hover:underline"
               >
                 hello@klotworld.com
               </a>{" "}
@@ -119,7 +119,7 @@ export default function TermsPage() {
               Questions about your preorder?{" "}
               <a
                 href="mailto:hello@klotworld.com"
-                className="text-gold hover:underline"
+                className="text-gold-ink hover:underline"
               >
                 hello@klotworld.com
               </a>

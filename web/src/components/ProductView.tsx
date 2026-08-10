@@ -227,7 +227,7 @@ export function ProductView({
               Size (EU)
             </p>
             {showSizePrompt && (
-              <span className="font-technical text-xs text-solar">
+              <span className="font-technical text-xs text-solar-ink">
                 Select a size
               </span>
             )}
@@ -243,7 +243,7 @@ export function ProductView({
                 }}
                 className={`min-h-11 rounded-lg py-2 font-technical text-sm ring-1 transition-colors ${
                   size === s
-                    ? `${ACCENT_BG[colorway.accent]} text-void ring-transparent`
+                    ? `${ACCENT_BG[colorway.accent]} text-foreground ring-transparent`
                     : "bg-surface text-foreground ring-line hover:ring-muted"
                 }`}
               >
@@ -264,7 +264,7 @@ export function ProductView({
         <p className="mt-3 text-center font-technical text-xs text-muted">
           Estimated delivery: October 2026 &middot; Full preorder payment
           &middot;{" "}
-          <Link href="/terms" className="text-gold hover:underline">
+          <Link href="/terms" className="text-gold-ink hover:underline">
             Preorder terms
           </Link>
         </p>

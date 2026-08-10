@@ -81,7 +81,7 @@ export function OrderRowActions({
             type="button"
             onClick={handleShip}
             disabled={isPending}
-            className="rounded-full bg-gold px-3 py-1 font-technical text-xs font-medium text-void disabled:opacity-60"
+            className="rounded-full bg-gold px-3 py-1 font-technical text-xs font-medium text-foreground disabled:opacity-60"
           >
             Mark Shipped
           </button>
@@ -110,7 +110,7 @@ export function OrderRowActions({
       </div>
 
       {showHistory && messages.length > 0 && (
-        <div className="flex flex-col gap-1 rounded-lg bg-void p-3 ring-1 ring-line">
+        <div className="flex flex-col gap-1 rounded-lg bg-surface-raised p-3 ring-1 ring-line">
           {messages.map((m) => (
             <div key={m.id} className="font-technical text-xs">
               <span className="text-muted">
@@ -125,7 +125,7 @@ export function OrderRowActions({
       )}
 
       {showCompose && (
-        <div className="flex flex-col gap-2 rounded-lg bg-void p-3 ring-1 ring-line">
+        <div className="flex flex-col gap-2 rounded-lg bg-surface-raised p-3 ring-1 ring-line">
           <div className="flex gap-2">
             <button
               type="button"

@@ -34,14 +34,6 @@ const markReveal: Variants = {
 export function Hero() {
   return (
     <section className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6">
-      {/* Ambient stage glow, breathing slowly behind the mark */}
-      <motion.div
-        aria-hidden
-        className="absolute left-1/2 top-1/2 h-[32rem] w-[32rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold opacity-20 blur-[120px]"
-        animate={{ opacity: [0.14, 0.24, 0.14] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
-
       <motion.div
         variants={container}
         initial="hidden"
@@ -67,22 +59,28 @@ export function Hero() {
             sizes="192px"
             className="rounded-xl object-cover"
           />
-          <div
+          {/* Soft breathing presence — a shadow reads as "lit" on paper
+              where a blurred glow blob (the dark-theme approach) would not */}
+          <motion.div
+            aria-hidden
             className="pointer-events-none absolute inset-0 rounded-xl"
-            style={{
-              background:
-                "radial-gradient(ellipse 70% 70% at center, transparent 0%, var(--void) 92%)",
-              mixBlendMode: "multiply",
+            animate={{
+              boxShadow: [
+                "0 8px 30px -6px rgba(227, 178, 60, 0.25)",
+                "0 12px 40px -6px rgba(227, 178, 60, 0.4)",
+                "0 8px 30px -6px rgba(227, 178, 60, 0.25)",
+              ],
             }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
-          <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-gold/40" />
+          <div className="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-gold/60" />
         </motion.div>
 
         <motion.h1
           variants={fadeUp}
           className="mt-8 font-display text-5xl font-bold tracking-tight sm:text-7xl"
         >
-          KLΘT <span className="text-gold">NOMAD</span>
+          KLΘT <span className="text-gold-ink">NOMAD</span>
         </motion.h1>
 
         <motion.p variants={fadeUp} className="mt-4 max-w-md text-muted">
@@ -96,7 +94,7 @@ export function Hero() {
         <motion.a
           variants={fadeUp}
           href="/nomad#buy"
-          className="mt-10 rounded-full bg-gold px-8 py-3 font-technical text-sm font-medium tracking-wide text-void transition-transform hover:scale-105"
+          className="mt-10 rounded-full bg-gold px-8 py-3 font-technical text-sm font-medium tracking-wide text-foreground transition-transform hover:scale-105"
         >
           Preorder the Nomad
         </motion.a>
