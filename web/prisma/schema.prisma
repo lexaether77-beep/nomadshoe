@@ -82,3 +82,11 @@ model Message {
 
   @@index([toEmail])
 }
+
+model WaitlistEntry {
+  id     String  @id @default(cuid())
+  email  String  @unique
+  source String?
+
+  createdAt DateTime @default(now())
+}
