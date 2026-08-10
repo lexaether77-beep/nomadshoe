@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { getColorway } from "@/lib/colorways";
 import { OrderRowActions } from "@/components/admin/OrderRowActions";
+import { SignOutButton } from "@/components/admin/SignOutButton";
 
 const STATUS_COLOR: Record<string, string> = {
   PAID: "text-gold-ink",
@@ -37,6 +38,7 @@ export default async function AdminPage() {
           >
             Download CSV
           </a>
+          <SignOutButton />
         </div>
       </div>
 
