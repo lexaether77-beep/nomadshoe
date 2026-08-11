@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { nomadSpecs } from "@/lib/specs";
 import { NsibidiExplainer } from "@/components/NsibidiExplainer";
 
@@ -25,6 +26,12 @@ export function BrandStory() {
           Designed in Lagos. Built for the ground beneath you, wherever that
           ground happens to be.
         </p>
+        <Link
+          href="/nsibidi-story"
+          className="mt-4 inline-block font-technical text-xs tracking-[0.2em] text-gold-ink uppercase hover:underline"
+        >
+          Read the full story &rarr;
+        </Link>
       </div>
 
       <div className="rounded-2xl bg-surface p-8 ring-1 ring-line">

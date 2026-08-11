@@ -31,6 +31,9 @@ export function Footer() {
           >
             hello@klotworld.com
           </a>
+          <Link href="/nsibidi-story" className="hover:text-foreground">
+            The Nsibidi Story
+          </Link>
           <Link href="/terms" className="hover:text-foreground">
             Preorder Terms
           </Link>
