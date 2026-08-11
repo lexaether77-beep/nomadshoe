@@ -1,4 +1,5 @@
 import { nomadSpecs } from "@/lib/specs";
+import { NsibidiExplainer } from "@/components/NsibidiExplainer";
 
 export function BrandStory() {
   return (
@@ -13,14 +14,14 @@ export function BrandStory() {
         <p className="mt-6 text-muted leading-relaxed">
           The NOMAD is designed to mimic the natural shape and movement of
           the foot &mdash; a five-toe, zero-drop shoe built for maximum
-          ground feedback, balance, and comfort. Every pair carries four
+          ground feedback, balance, and comfort. Every pair carries three
           symbols inspired by Nsibidi, an ideographic script native to
-          southeastern Nigeria, reading:
+          southeastern Nigeria.
         </p>
-        <p className="mt-6 font-display text-xl text-gold-ink">
-          &ldquo;Time is the Spirit of God.&rdquo;
-        </p>
-        <p className="mt-6 text-muted leading-relaxed">
+
+        <NsibidiExplainer />
+
+        <p className="mt-8 text-muted leading-relaxed">
           Designed in Lagos. Built for the ground beneath you, wherever that
           ground happens to be.
         </p>
