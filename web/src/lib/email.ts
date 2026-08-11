@@ -4,6 +4,14 @@ import { getColorway } from "@/lib/colorways";
 
 const FROM = "KLΘT <orders@nomad.klotworld.com>";
 
+function siteUrl() {
+  return process.env.NEXT_PUBLIC_SITE_URL ?? "https://nomad.klotworld.com";
+}
+
+function unsubscribeFooter(token: string) {
+  return `\n\n—\nDon't want these emails? Unsubscribe: ${siteUrl()}/api/waitlist/unsubscribe?token=${token}`;
+}
+
 type OrderWithItems = Order & { items: OrderItem[] };
 
 function itemLines(items: OrderItem[]) {
@@ -33,6 +41,34 @@ export function buildOrderDeliveredEmail(order: OrderWithItems) {
   return {
     subject: `How's your KLΘT NOMAD? We'd love to hear from you — ${order.reference}`,
     body: `${order.fullName}, we hope your NOMAD feels as good as it looks.\n\nWe're a small, independent brand, and every bit of feedback helps us improve future runs. If you have a minute, just reply to this email and tell us what you think — how the fit feels, what you'd change, anything. A photo of you wearing them would mean even more.\n\nReference: ${order.reference}\n\nVictory Through Harmony.\n\nKLΘT`,
+  };
+}
+
+// --- Waitlist drip (3-email sequence for non-converting visitors) ---
+
+export function buildWaitlistWelcomeEmail(unsubscribeToken: string) {
+  return {
+    subject: "You're on the list — KLΘT NOMAD",
+    body: `Victory Through Harmony.\n\nYou're on the list for the KLΘT NOMAD — a zero-drop, five-toe barefoot shoe designed in Lagos, etched with Nsibidi symbols reading "Time is the Spirit of God."\n\nWe'll email you with production updates, and again as we get close to shipping. If you'd rather not wait, NOMAD is open for preorder right now.\n\nPreorder: ${siteUrl()}/nomad\nRead the story: ${siteUrl()}/nsibidi-story\n\nKLΘT${unsubscribeFooter(unsubscribeToken)}`,
+  };
+}
+
+/**
+ * PLACEHOLDER copy — generic on purpose. Swap for a real production
+ * update (photos, milestones, timeline) before this has been live long
+ * enough to actually send (it only fires 28 days after signup).
+ */
+export function buildWaitlistProgressEmail(unsubscribeToken: string) {
+  return {
+    subject: "KLΘT NOMAD — a production update",
+    body: `Quick update on the NOMAD: production is moving forward in Lagos.\n\nWe'll be back in your inbox as we get closer to shipping.\n\nKLΘT${unsubscribeFooter(unsubscribeToken)}`,
+  };
+}
+
+export function buildWaitlistLaunchEmail(unsubscribeToken: string) {
+  return {
+    subject: "KLΘT NOMAD — ships soon",
+    body: `The wait's almost over — NOMAD ships soon.\n\nIf you haven't preordered yet, now's the time — the first production run is limited.\n\nPreorder: ${siteUrl()}/nomad\n\nKLΘT${unsubscribeFooter(unsubscribeToken)}`,
   };
 }
 
@@ -89,4 +125,28 @@ export async function sendCustomEmail(params: {
   body: string;
 }): Promise<boolean> {
   return send(params);
+}
+
+export async function sendWaitlistWelcome(
+  to: string,
+  unsubscribeToken: string
+): Promise<boolean> {
+  const { subject, body } = buildWaitlistWelcomeEmail(unsubscribeToken);
+  return send({ to, subject, body });
+}
+
+export async function sendWaitlistProgress(
+  to: string,
+  unsubscribeToken: string
+): Promise<boolean> {
+  const { subject, body } = buildWaitlistProgressEmail(unsubscribeToken);
+  return send({ to, subject, body });
+}
+
+export async function sendWaitlistLaunch(
+  to: string,
+  unsubscribeToken: string
+): Promise<boolean> {
+  const { subject, body } = buildWaitlistLaunchEmail(unsubscribeToken);
+  return send({ to, subject, body });
 }

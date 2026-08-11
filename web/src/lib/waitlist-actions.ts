@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { sendWaitlistWelcome } from "@/lib/email";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -12,7 +13,16 @@ export async function joinWaitlist(email: string, source: string) {
   }
 
   try {
-    await db.waitlistEntry.create({ data: { email: trimmed, source } });
+    const entry = await db.waitlistEntry.create({
+      data: { email: trimmed, source },
+    });
+    const sent = await sendWaitlistWelcome(entry.email, entry.unsubscribeToken);
+    if (sent) {
+      await db.waitlistEntry.update({
+        where: { id: entry.id },
+        data: { welcomeEmailSentAt: new Date() },
+      });
+    }
   } catch (err) {
     const isDuplicate =
       typeof err === "object" &&

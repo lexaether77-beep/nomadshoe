@@ -86,9 +86,15 @@ model Message {
 }
 
 model WaitlistEntry {
-  id     String  @id @default(cuid())
-  email  String  @unique
-  source String?
+  id                String    @id @default(cuid())
+  email             String    @unique
+  source            String?
+  unsubscribeToken  String    @unique @default(cuid())
+  unsubscribedAt    DateTime?
+
+  welcomeEmailSentAt   DateTime?
+  progressEmailSentAt  DateTime?
+  launchEmailSentAt    DateTime?
 
   createdAt DateTime @default(now())
 }

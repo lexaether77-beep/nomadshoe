@@ -47,3 +47,12 @@ export const productionWaves = [
   { label: "Wave 1", cap: 300 },
   { label: "Wave 2", cap: 600 },
 ] as const;
+
+/**
+ * Set this once a real delivery date is locked in — the waitlist drip's
+ * "your pair ships soon" email (Email 3) only sends once today is within
+ * 7 days of this date. Leave null until then; the cron job skips that
+ * step entirely while it's unset, so nothing sends prematurely.
+ * Format: "YYYY-MM-DD".
+ */
+export const releaseDate: string | null = null;
