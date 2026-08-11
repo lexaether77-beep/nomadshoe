@@ -34,6 +34,9 @@ export function Footer() {
           <Link href="/nsibidi-story" className="hover:text-foreground">
             The Nsibidi Story
           </Link>
+          <Link href="/why-barefoot" className="hover:text-foreground">
+            Why Barefoot?
+          </Link>
           <Link href="/terms" className="hover:text-foreground">
             Preorder Terms
           </Link>

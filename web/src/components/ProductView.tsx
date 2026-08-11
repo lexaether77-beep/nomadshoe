@@ -373,9 +373,17 @@ export function ProductView({
 
         {/* Spec sheet */}
         <div className="mt-12 rounded-2xl bg-surface p-6 ring-1 ring-line">
-          <p className="font-technical text-xs tracking-[0.3em] text-muted uppercase">
-            Specification
-          </p>
+          <div className="flex items-baseline justify-between">
+            <p className="font-technical text-xs tracking-[0.3em] text-muted uppercase">
+              Specification
+            </p>
+            <Link
+              href="/why-barefoot"
+              className="font-technical text-xs text-gold-ink hover:underline"
+            >
+              Why barefoot?
+            </Link>
+          </div>
           <dl className="mt-5 flex flex-col gap-3">
             {nomadSpecs.map((spec) => (
               <div
