@@ -10,6 +10,7 @@ import { nomadMeta, nomadSizeScale, nomadSpecs } from "@/lib/specs";
 import { useCartStore } from "@/lib/cart-store";
 import { ProductStage } from "@/components/ProductStage";
 import { joinWaitlist } from "@/lib/waitlist-actions";
+import { getCurrentWave } from "@/lib/production";
 
 const ACCENT_RING: Record<Colorway["accent"], string> = {
   gold: "ring-gold",
@@ -40,12 +41,15 @@ const SWIPE_THRESHOLD_PX = 50;
 
 export function ProductView({
   initialColorwaySlug,
+  claimedPairs,
 }: {
   initialColorwaySlug: ColorwaySlug;
+  claimedPairs: number;
 }) {
   const [colorway, setColorway] = useState<Colorway>(
     getColorway(initialColorwaySlug) ?? colorways[0]
   );
+  const wave = getCurrentWave(claimedPairs);
   const [activeImage, setActiveImage] = useState<ImageKey>("sideA");
   const [size, setSize] = useState<string | null>(null);
   const [showSizePrompt, setShowSizePrompt] = useState(false);
@@ -231,6 +235,27 @@ export function ProductView({
         <p className="mt-2 font-technical text-xs text-gold-ink">
           Includes a free pair of KLΘT 5-finger socks
         </p>
+
+        {wave && (
+          <div className="mt-5">
+            <div className="flex items-baseline justify-between font-technical text-xs text-muted">
+              <span className="tracking-[0.2em] uppercase">
+                First Production Run &middot; {wave.label}
+              </span>
+              <span>
+                {wave.claimed} / {wave.cap} pairs claimed
+              </span>
+            </div>
+            <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-surface-raised">
+              <div
+                className={`h-full rounded-full ${ACCENT_BG[colorway.accent]}`}
+                style={{
+                  width: `${Math.min(100, (wave.claimed / wave.cap) * 100)}%`,
+                }}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Colorway swatches */}
         <div className="mt-8">

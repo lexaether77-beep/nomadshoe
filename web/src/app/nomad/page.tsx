@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { ProductView } from "@/components/ProductView";
 import { colorways, getColorway } from "@/lib/colorways";
 import { nomadMeta } from "@/lib/specs";
+import { db } from "@/lib/db";
 
 type NomadPageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -44,6 +45,12 @@ export default async function NomadPage({ searchParams }: NomadPageProps) {
   const requested = typeof params.color === "string" ? params.color : undefined;
   const initial = (requested && getColorway(requested)) || colorways[0];
 
+  const claimedResult = await db.orderItem.aggregate({
+    _sum: { quantity: true },
+    where: { order: { status: "PAID" } },
+  });
+  const claimedPairs = claimedResult._sum.quantity ?? 0;
+
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nomad.klotworld.com";
   const jsonLd = {
     "@context": "https://schema.org",
@@ -72,7 +79,7 @@ export default async function NomadPage({ searchParams }: NomadPageProps) {
       />
       <Header />
       <main id="main-content" className="flex flex-1 flex-col pt-24">
-        <ProductView initialColorwaySlug={initial.slug} />
+        <ProductView initialColorwaySlug={initial.slug} claimedPairs={claimedPairs} />
       </main>
       <Footer />
     </>
