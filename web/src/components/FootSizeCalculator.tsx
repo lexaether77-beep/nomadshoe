@@ -89,7 +89,7 @@ export function FootSizeCalculator() {
           )}
           {result.status === "too-large" && (
             <p className="text-muted">
-              That&rsquo;s larger than our largest mold (45/45). Email{" "}
+              That&rsquo;s larger than our largest mold (44/45). Email{" "}
               <a
                 href="mailto:hello@klotworld.com"
                 className="text-gold-ink hover:underline"

@@ -29,7 +29,7 @@ export const nomadSizeScale = [
   "39/40",
   "41/42",
   "43/44",
-  "45/45",
+  "44/45",
 ] as const;
 
 /**

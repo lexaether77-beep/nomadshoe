@@ -37,7 +37,7 @@ export default function SizeGuidePage() {
         <div className="mt-10 overflow-hidden rounded-2xl ring-1 ring-line">
           <ZoomableImage
             src="/images/guides/size-chart.jpg"
-            alt="KLΘT NOMAD size chart: EU sizes 35–45 paired in a two-size scale (35/36 through 45/45), with US Men, US Women, UK, and Asia (cm) equivalents. Measure foot length from heel to the tip of the longest toe."
+            alt="KLΘT NOMAD size chart: EU sizes 35–45 paired in a two-size scale (35/36 through 44/45), with US Men, US Women, UK, and Asia (cm) equivalents. Measure foot length from heel to the tip of the longest toe."
             width={1280}
             height={853}
           />
