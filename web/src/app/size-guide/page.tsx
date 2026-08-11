@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ZoomableImage } from "@/components/ZoomableImage";
+import { FootSizeCalculator } from "@/components/FootSizeCalculator";
 
 export const metadata: Metadata = {
   title: "Size Guide — KLΘT NOMAD",
@@ -30,6 +31,8 @@ export default function SizeGuidePage() {
           Measure your foot length and match it against the chart below. If
           you fall between sizes, we recommend sizing down.
         </p>
+
+        <FootSizeCalculator />
 
         <div className="mt-10 overflow-hidden rounded-2xl ring-1 ring-line">
           <ZoomableImage
