@@ -29,7 +29,19 @@ export function buildOrderShippedEmail(order: OrderWithItems) {
   };
 }
 
-async function send(params: { to: string; subject: string; body: string }) {
+export function buildOrderDeliveredEmail(order: OrderWithItems) {
+  return {
+    subject: `How's your KLΘT NOMAD? We'd love to hear from you — ${order.reference}`,
+    body: `${order.fullName}, we hope your NOMAD feels as good as it looks.\n\nWe're a small, independent brand, and every bit of feedback helps us improve future runs. If you have a minute, just reply to this email and tell us what you think — how the fit feels, what you'd change, anything. A photo of you wearing them would mean even more.\n\nReference: ${order.reference}\n\nVictory Through Harmony.\n\nKLΘT`,
+  };
+}
+
+async function send(params: {
+  to: string;
+  subject: string;
+  body: string;
+  replyTo?: string;
+}) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return false;
 
@@ -39,6 +51,7 @@ async function send(params: { to: string; subject: string; body: string }) {
     to: params.to,
     subject: params.subject,
     text: params.body,
+    ...(params.replyTo ? { replyTo: params.replyTo } : {}),
   });
 
   return true;
@@ -56,6 +69,18 @@ export async function sendOrderShipped(
 ): Promise<boolean> {
   const { subject, body } = buildOrderShippedEmail(order);
   return send({ to: order.email, subject, body });
+}
+
+export async function sendOrderDelivered(
+  order: OrderWithItems
+): Promise<boolean> {
+  const { subject, body } = buildOrderDeliveredEmail(order);
+  return send({
+    to: order.email,
+    subject,
+    body,
+    replyTo: "hello@klotworld.com",
+  });
 }
 
 export async function sendCustomEmail(params: {

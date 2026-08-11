@@ -98,6 +98,7 @@ export default async function AdminPage() {
                     email={order.email}
                     isPaid={order.status === "PAID"}
                     shippedAt={order.shippedAt?.toISOString() ?? null}
+                    deliveredAt={order.deliveredAt?.toISOString() ?? null}
                     messages={order.messages.map((m) => ({
                       id: m.id,
                       kind: m.kind,

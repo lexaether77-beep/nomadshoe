@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   markOrderShipped,
+  markOrderDelivered,
   sendCustomMessage,
   getMessageTemplate,
 } from "@/lib/admin-actions";
@@ -20,6 +21,7 @@ const KIND_LABEL: Record<string, string> = {
   CUSTOM: "Custom",
   ORDER_CONFIRMED: "Order confirmed",
   ORDER_SHIPPED: "Order shipped",
+  ORDER_DELIVERED: "Order delivered",
 };
 
 export function OrderRowActions({
@@ -27,12 +29,14 @@ export function OrderRowActions({
   email,
   isPaid,
   shippedAt,
+  deliveredAt,
   messages,
 }: {
   orderId: string;
   email: string;
   isPaid: boolean;
   shippedAt: string | null;
+  deliveredAt: string | null;
   messages: MessageSummary[];
 }) {
   const router = useRouter();
@@ -46,6 +50,13 @@ export function OrderRowActions({
   function handleShip() {
     startTransition(async () => {
       await markOrderShipped(orderId);
+      router.refresh();
+    });
+  }
+
+  function handleDeliver() {
+    startTransition(async () => {
+      await markOrderDelivered(orderId);
       router.refresh();
     });
   }
@@ -64,7 +75,9 @@ export function OrderRowActions({
     });
   }
 
-  function applyTemplate(template: "ORDER_CONFIRMED" | "ORDER_SHIPPED") {
+  function applyTemplate(
+    template: "ORDER_CONFIRMED" | "ORDER_SHIPPED" | "ORDER_DELIVERED"
+  ) {
     startTransition(async () => {
       const t = await getMessageTemplate(orderId, template);
       setSubject(t.subject);
@@ -89,6 +102,21 @@ export function OrderRowActions({
         {shippedAt && (
           <span className="font-technical text-xs text-muted">
             Shipped {new Date(shippedAt).toLocaleDateString()}
+          </span>
+        )}
+        {shippedAt && !deliveredAt && (
+          <button
+            type="button"
+            onClick={handleDeliver}
+            disabled={isPending}
+            className="rounded-full bg-gold px-3 py-1 font-technical text-xs font-medium text-foreground disabled:opacity-60"
+          >
+            Mark Delivered
+          </button>
+        )}
+        {deliveredAt && (
+          <span className="font-technical text-xs text-muted">
+            Delivered {new Date(deliveredAt).toLocaleDateString()}
           </span>
         )}
         <button
@@ -142,6 +170,14 @@ export function OrderRowActions({
               className="rounded-full px-2 py-0.5 font-technical text-[10px] tracking-wide text-muted uppercase ring-1 ring-line hover:text-foreground hover:ring-muted"
             >
               Template: Shipped
+            </button>
+            <button
+              type="button"
+              onClick={() => applyTemplate("ORDER_DELIVERED")}
+              disabled={isPending}
+              className="rounded-full px-2 py-0.5 font-technical text-[10px] tracking-wide text-muted uppercase ring-1 ring-line hover:text-foreground hover:ring-muted"
+            >
+              Template: Delivered
             </button>
           </div>
           <input

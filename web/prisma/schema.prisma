@@ -40,6 +40,7 @@ model Order {
 
   flutterwaveTxId String?
   shippedAt       DateTime?
+  deliveredAt     DateTime?
 
   items    OrderItem[]
   messages Message[]
@@ -65,6 +66,7 @@ enum MessageKind {
   CUSTOM
   ORDER_CONFIRMED
   ORDER_SHIPPED
+  ORDER_DELIVERED
 }
 
 model Message {
