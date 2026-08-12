@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -20,6 +20,22 @@ export default function CheckoutPage() {
     createOrder,
     null
   );
+  const [ngnRate, setNgnRate] = useState<number | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/fx-rate")
+      .then((res) => res.json())
+      .then((data: { rate?: number }) => {
+        if (!cancelled && typeof data.rate === "number") setNgnRate(data.rate);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const ngnEstimate = ngnRate ? Math.round(subtotal * ngnRate) : null;
 
   return (
     <>
@@ -196,9 +212,16 @@ export default function CheckoutPage() {
                   </button>
                 ))}
               </div>
-              {currency === "NGN" && (
+              {ngnRate && (
                 <p className="font-technical text-xs text-muted">
-                  Charged in Naira at the live USD/NGN rate when you submit.
+                  Live rate: 1 USD &asymp; &#8358;{Math.round(ngnRate).toLocaleString()}
+                  {currency === "NGN" && ngnEstimate && (
+                    <>
+                      {" "}
+                      &middot; est. total &#8358;{ngnEstimate.toLocaleString()}
+                      {" "}&middot; final amount confirmed at checkout
+                    </>
+                  )}
                 </p>
               )}
 
@@ -255,9 +278,16 @@ export default function CheckoutPage() {
                 <span className="font-technical text-sm text-muted">
                   Subtotal
                 </span>
-                <span className="font-display text-xl font-medium">
-                  ${subtotal}
-                </span>
+                <div className="text-right">
+                  <span className="font-display text-xl font-medium">
+                    ${subtotal}
+                  </span>
+                  {currency === "NGN" && ngnEstimate && (
+                    <p className="font-technical text-xs text-muted">
+                      &asymp; &#8358;{ngnEstimate.toLocaleString()}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </form>
