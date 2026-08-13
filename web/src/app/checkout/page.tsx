@@ -14,7 +14,9 @@ const inputClass =
 
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
-  const subtotal = cartSubtotalUSD(items);
+  const appliedDiscount = useCartStore((state) => state.appliedDiscount);
+  const subtotal = cartSubtotalUSD(items, appliedDiscount);
+  const unitPrice = appliedDiscount?.priceUSD ?? nomadMeta.priceUSD;
   const [currency, setCurrency] = useState<"USD" | "NGN">("USD");
   const [state, formAction, pending] = useActionState<CheckoutState, FormData>(
     createOrder,
@@ -66,6 +68,11 @@ export default function CheckoutPage() {
               value={JSON.stringify(items)}
             />
             <input type="hidden" name="currency" value={currency} />
+            <input
+              type="hidden"
+              name="discountCode"
+              value={appliedDiscount?.code ?? ""}
+            />
 
             <div className="flex flex-col gap-4">
               <p
@@ -264,7 +271,12 @@ export default function CheckoutPage() {
                         {item.size})
                       </span>
                       <span className="font-technical">
-                        ${item.quantity * nomadMeta.priceUSD}
+                        {appliedDiscount && (
+                          <span className="mr-2 text-muted line-through">
+                            ${item.quantity * nomadMeta.priceUSD}
+                          </span>
+                        )}
+                        ${item.quantity * unitPrice}
                       </span>
                     </div>
                   );
@@ -273,6 +285,14 @@ export default function CheckoutPage() {
                   <span>1 &times; KLΘT 5-finger socks</span>
                   <span className="font-technical text-gold-ink">Free</span>
                 </div>
+                {appliedDiscount && (
+                  <div className="flex items-baseline justify-between text-sm">
+                    <span className="text-muted">Discount</span>
+                    <span className="font-technical text-gold-ink">
+                      {appliedDiscount.code}
+                    </span>
+                  </div>
+                )}
               </div>
               <div className="mt-5 flex items-baseline justify-between border-t border-line pt-4">
                 <span className="font-technical text-sm text-muted">

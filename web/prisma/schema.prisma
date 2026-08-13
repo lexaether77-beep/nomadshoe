@@ -85,6 +85,16 @@ model Message {
   @@index([toEmail])
 }
 
+model DiscountCode {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  priceUSD  Int
+  maxUses   Int
+  usedCount Int      @default(0)
+
+  createdAt DateTime @default(now())
+}
+
 model WaitlistEntry {
   id                String    @id @default(cuid())
   email             String    @unique

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { colorways } from "@/lib/colorways";
+import { nomadMeta } from "@/lib/specs";
 import { ProductStage } from "@/components/ProductStage";
 
 export function ColorwayTeaser() {
@@ -12,6 +13,9 @@ export function ColorwayTeaser() {
         <h2 className="mt-3 font-display text-3xl font-bold sm:text-4xl">
           Choose Your Colorway
         </h2>
+        <p className="mt-3 font-technical text-sm text-muted">
+          ${nomadMeta.priceUSD} &middot; shipping included
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">

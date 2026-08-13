@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
+import { nomadMeta } from "@/lib/specs";
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
@@ -98,6 +99,12 @@ export function Hero() {
         >
           Preorder the Nomad
         </motion.a>
+        <motion.p
+          variants={fadeUp}
+          className="mt-3 font-technical text-xs text-muted"
+        >
+          ${nomadMeta.priceUSD} &middot; shipping included
+        </motion.p>
       </motion.div>
 
       <motion.div

@@ -23,6 +23,7 @@ const checkoutSchema = z.object({
   postalCode: z.string().optional(),
   country: z.string().min(2, "Enter your country"),
   currency: z.enum(["USD", "NGN"]),
+  discountCode: z.string().optional(),
 });
 
 const cartItemSchema = z.object({
@@ -50,8 +51,31 @@ export async function createOrder(
     return { error: "Your cart is empty. Please add an item before checking out." };
   }
 
+  let unitPriceUSD: number = nomadMeta.priceUSD;
+  let redeemedCode: string | null = null;
+  const discountCodeRaw = parsed.data.discountCode?.trim().toUpperCase();
+
+  if (discountCodeRaw) {
+    // Atomic redemption — only succeeds if usedCount < maxUses, so
+    // concurrent checkouts can never push a code past its cap. This is
+    // the real enforcement; the cart page's earlier check is just UX.
+    const redeemed = await db.$queryRaw<{ priceUSD: number }[]>`
+      UPDATE "DiscountCode"
+      SET "usedCount" = "usedCount" + 1
+      WHERE "code" = ${discountCodeRaw} AND "usedCount" < "maxUses"
+      RETURNING "priceUSD"
+    `;
+    if (redeemed.length === 0) {
+      return {
+        error: "That discount code is invalid or has expired. Remove it and try again.",
+      };
+    }
+    unitPriceUSD = redeemed[0].priceUSD;
+    redeemedCode = discountCodeRaw;
+  }
+
   const amountUSD = cartItems.reduce(
-    (sum, item) => sum + item.quantity * nomadMeta.priceUSD,
+    (sum, item) => sum + item.quantity * unitPriceUSD,
     0
   );
 
@@ -82,7 +106,7 @@ export async function createOrder(
           colorwaySlug: item.colorwaySlug,
           size: item.size,
           quantity: item.quantity,
-          unitPriceUSD: nomadMeta.priceUSD,
+          unitPriceUSD,
         })),
       },
     },
@@ -106,6 +130,14 @@ export async function createOrder(
       where: { id: order.id },
       data: { status: "FAILED" },
     });
+    if (redeemedCode) {
+      // Give back the redemption — this attempt never reached Flutterwave,
+      // so it shouldn't count against the code's usage cap.
+      await db.discountCode.updateMany({
+        where: { code: redeemedCode },
+        data: { usedCount: { decrement: 1 } },
+      });
+    }
     return { error: "Could not start payment. Please try again." };
   }
 
