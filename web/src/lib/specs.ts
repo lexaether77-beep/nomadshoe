@@ -49,6 +49,13 @@ export const productionWaves = [
 ] as const;
 
 /**
+ * The wave badge stays hidden entirely until claimed pairs reach this
+ * number, then appears showing the real cumulative count (not reset to
+ * zero). Set to 0 to show it from the very first order.
+ */
+export const waveRevealThreshold = 150;
+
+/**
  * Set this once a real delivery date is locked in — the waitlist drip's
  * "your pair ships soon" email (Email 3) only sends once today is within
  * 7 days of this date. Leave null until then; the cron job skips that
