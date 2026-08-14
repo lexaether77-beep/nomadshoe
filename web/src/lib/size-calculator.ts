@@ -6,7 +6,7 @@ export const sizeChartCm = [
   { size: "39/40", minCm: 25.0, maxCm: 25.5 },
   { size: "41/42", minCm: 26.0, maxCm: 26.5 },
   { size: "43/44", minCm: 27.0, maxCm: 27.5 },
-  { size: "44/45", minCm: 28.0, maxCm: 28.5 },
+  { size: "45/46", minCm: 28.0, maxCm: 28.5 },
 ] as const;
 
 export type SizeRecommendation =

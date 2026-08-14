@@ -14,7 +14,7 @@ export const nomadMeta = {
   model: "NOMAD",
   category: "Barefoot / Lifestyle / Outdoor",
   gender: "Unisex",
-  sizeRange: "EU 35–45",
+  sizeRange: "EU 35–46",
   sku: "KLT-NMD-BGP-001",
   release: "October 2026",
   origin: "Lagos, Nigeria",
@@ -29,7 +29,7 @@ export const nomadSizeScale = [
   "39/40",
   "41/42",
   "43/44",
-  "44/45",
+  "45/46",
 ] as const;
 
 /**
