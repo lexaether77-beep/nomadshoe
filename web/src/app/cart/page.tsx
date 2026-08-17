@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { track } from "@vercel/analytics";
 import { Header } from "@/components/Header";
@@ -10,55 +9,11 @@ import { getColorway } from "@/lib/colorways";
 import { nomadMeta } from "@/lib/specs";
 import { useCartStore, cartSubtotalUSD } from "@/lib/cart-store";
 
-type DiscountValidation =
-  | { valid: true; code: string; priceUSD: number }
-  | { valid: false; error: string };
-
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
   const setQuantity = useCartStore((state) => state.setQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
-  const appliedDiscount = useCartStore((state) => state.appliedDiscount);
-  const setAppliedDiscount = useCartStore((state) => state.setAppliedDiscount);
-  const subtotal = cartSubtotalUSD(items, appliedDiscount);
-  const fullPriceSubtotal = cartSubtotalUSD(items);
-  const unitPrice = appliedDiscount?.priceUSD ?? nomadMeta.priceUSD;
-
-  const [codeInput, setCodeInput] = useState("");
-  const [codeStatus, setCodeStatus] = useState<"idle" | "loading" | "error">("idle");
-  const [codeError, setCodeError] = useState("");
-
-  async function handleApplyCode(e: React.FormEvent) {
-    e.preventDefault();
-    setCodeStatus("loading");
-    setCodeError("");
-    try {
-      const res = await fetch("/api/discount/validate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code: codeInput }),
-      });
-      const result: DiscountValidation = await res.json();
-      if (result.valid) {
-        setAppliedDiscount({ code: result.code, priceUSD: result.priceUSD });
-        setCodeStatus("idle");
-        setCodeInput("");
-        track("discount_applied", { code: result.code });
-      } else {
-        setCodeStatus("error");
-        setCodeError(result.error);
-      }
-    } catch {
-      setCodeStatus("error");
-      setCodeError("Something went wrong. Try again.");
-    }
-  }
-
-  function handleRemoveCode() {
-    setAppliedDiscount(null);
-    setCodeStatus("idle");
-    setCodeError("");
-  }
+  const subtotal = cartSubtotalUSD(items);
 
   function handleCheckoutClick() {
     track("checkout_started", { itemCount: items.length, subtotalUSD: subtotal });
@@ -106,17 +61,7 @@ export default function CartPage() {
                           {colorway.name}
                         </p>
                         <p className="text-sm text-muted">
-                          EU {item.size} &middot;{" "}
-                          {appliedDiscount ? (
-                            <>
-                              <span className="line-through">
-                                ${nomadMeta.priceUSD}
-                              </span>{" "}
-                              <span className="text-gold-ink">${unitPrice}</span>
-                            </>
-                          ) : (
-                            <>${unitPrice}</>
-                          )}
+                          EU {item.size} &middot; ${nomadMeta.priceUSD}
                         </p>
                       </div>
 
@@ -169,61 +114,14 @@ export default function CartPage() {
               })}
             </div>
 
-            <div className="mt-10 flex flex-col gap-3">
-              {appliedDiscount ? (
-                <div className="flex items-center justify-between rounded-full bg-surface px-4 py-2 ring-1 ring-line">
-                  <span className="font-technical text-xs text-gold-ink">
-                    Code {appliedDiscount.code} applied
-                  </span>
-                  <button
-                    type="button"
-                    onClick={handleRemoveCode}
-                    className="font-technical text-xs text-muted underline decoration-dotted hover:text-foreground"
-                  >
-                    Remove
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleApplyCode} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={codeInput}
-                    onChange={(e) => setCodeInput(e.target.value)}
-                    placeholder="Discount code"
-                    aria-label="Discount code"
-                    className="min-h-11 flex-1 rounded-full bg-surface px-4 font-technical text-sm uppercase ring-1 ring-line placeholder:text-muted placeholder:normal-case focus:outline-none focus:ring-2 focus:ring-gold"
-                  />
-                  <button
-                    type="submit"
-                    disabled={codeStatus === "loading" || !codeInput.trim()}
-                    className="min-h-11 shrink-0 rounded-full bg-surface px-5 font-technical text-sm font-medium ring-1 ring-line transition-colors hover:ring-muted disabled:opacity-60"
-                  >
-                    {codeStatus === "loading" ? "Checking…" : "Apply"}
-                  </button>
-                </form>
-              )}
-              {codeStatus === "error" && (
-                <p role="alert" className="font-technical text-xs text-solar-ink">
-                  {codeError}
-                </p>
-              )}
-            </div>
-
-            <div className="mt-4 flex flex-col gap-2 rounded-2xl bg-surface p-6 ring-1 ring-line">
+            <div className="mt-10 flex flex-col gap-2 rounded-2xl bg-surface p-6 ring-1 ring-line">
               <div className="flex items-baseline justify-between">
                 <span className="font-technical text-sm text-muted">
                   Subtotal
                 </span>
-                <div className="text-right">
-                  {appliedDiscount && (
-                    <span className="mr-2 font-technical text-sm text-muted line-through">
-                      ${fullPriceSubtotal}
-                    </span>
-                  )}
-                  <span className="font-display text-xl font-medium">
-                    ${subtotal}
-                  </span>
-                </div>
+                <span className="font-display text-xl font-medium">
+                  ${subtotal}
+                </span>
               </div>
               <p className="font-technical text-xs text-muted">
                 Shipping included. NGN conversion (if selected) calculated at

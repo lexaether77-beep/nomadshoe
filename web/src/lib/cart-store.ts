@@ -9,15 +9,11 @@ export type CartItem = {
   quantity: number;
 };
 
-export type AppliedDiscount = { code: string; priceUSD: number };
-
 type CartState = {
   items: CartItem[];
-  appliedDiscount: AppliedDiscount | null;
   addItem: (colorwaySlug: ColorwaySlug, size: string) => void;
   removeItem: (colorwaySlug: ColorwaySlug, size: string) => void;
   setQuantity: (colorwaySlug: ColorwaySlug, size: string, quantity: number) => void;
-  setAppliedDiscount: (discount: AppliedDiscount | null) => void;
   clear: () => void;
 };
 
@@ -25,7 +21,6 @@ export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       items: [],
-      appliedDiscount: null,
       addItem: (colorwaySlug, size) =>
         set((state) => {
           const existing = state.items.find(
@@ -63,8 +58,7 @@ export const useCartStore = create<CartState>()(
                     : item
                 ),
         })),
-      setAppliedDiscount: (discount) => set({ appliedDiscount: discount }),
-      clear: () => set({ items: [], appliedDiscount: null }),
+      clear: () => set({ items: [] }),
     }),
     { name: "klot-nomad-cart" }
   )
@@ -74,10 +68,9 @@ export function cartItemCount(items: CartItem[]): number {
   return items.reduce((sum, item) => sum + item.quantity, 0);
 }
 
-export function cartSubtotalUSD(
-  items: CartItem[],
-  discount?: AppliedDiscount | null
-): number {
-  const unitPrice = discount?.priceUSD ?? nomadMeta.priceUSD;
-  return items.reduce((sum, item) => sum + item.quantity * unitPrice, 0);
+export function cartSubtotalUSD(items: CartItem[]): number {
+  return items.reduce(
+    (sum, item) => sum + item.quantity * nomadMeta.priceUSD,
+    0
+  );
 }
