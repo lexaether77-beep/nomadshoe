@@ -232,10 +232,6 @@ export function ProductView({
             &middot; NGN available at checkout
           </span>
         </p>
-        <p className="mt-2 font-technical text-xs text-gold-ink">
-          Includes a free pair of KLΘT 5-finger socks
-        </p>
-
         {wave && (
           <div className="mt-5">
             <div className="flex items-baseline justify-between font-technical text-xs text-muted">
