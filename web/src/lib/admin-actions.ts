@@ -1,8 +1,8 @@
 "use server";
 
-import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { db } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
 import {
   sendOrderShipped,
   sendOrderDelivered,
@@ -11,22 +11,6 @@ import {
   buildOrderShippedEmail,
   buildOrderDeliveredEmail,
 } from "@/lib/email";
-
-async function requireAdmin() {
-  const user = process.env.ADMIN_USER;
-  const pass = process.env.ADMIN_PASSWORD;
-  const auth = (await headers()).get("authorization");
-
-  if (!user || !pass || !auth) throw new Error("Unauthorized");
-
-  const [scheme, encoded] = auth.split(" ");
-  if (scheme !== "Basic" || !encoded) throw new Error("Unauthorized");
-
-  const [providedUser, providedPass] = atob(encoded).split(":");
-  if (providedUser !== user || providedPass !== pass) {
-    throw new Error("Unauthorized");
-  }
-}
 
 export async function markOrderShipped(orderId: string) {
   await requireAdmin();

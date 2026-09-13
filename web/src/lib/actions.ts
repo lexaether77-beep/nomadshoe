@@ -8,9 +8,12 @@ import { initializePayment } from "@/lib/flutterwave";
 import { getUsdToNgnRate } from "@/lib/fx";
 import { nomadMeta, nomadSizeScale } from "@/lib/specs";
 import { colorways } from "@/lib/colorways";
+import { isRateLimited, getClientIp } from "@/lib/rate-limit";
 
 const colorwaySlugs = colorways.map((c) => c.slug) as [string, ...string[]];
 const sizeLabels = nomadSizeScale as unknown as [string, ...string[]];
+const RATE_LIMIT = 10;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
 
 const checkoutSchema = z.object({
   fullName: z.string().min(2, "Enter your full name"),
@@ -37,6 +40,11 @@ export async function createOrder(
   _prevState: CheckoutState,
   formData: FormData
 ): Promise<CheckoutState> {
+  const ip = await getClientIp();
+  if (isRateLimited(`checkout:${ip}`, RATE_LIMIT, RATE_WINDOW_MS)) {
+    return { error: "Too many attempts. Please try again in a few minutes." };
+  }
+
   const parsed = checkoutSchema.safeParse(Object.fromEntries(formData.entries()));
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Please check your details." };

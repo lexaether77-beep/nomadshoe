@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { sendWaitlistProgress, sendWaitlistLaunch } from "@/lib/email";
 import { releaseDate } from "@/lib/specs";
+import { timingSafeEqual } from "@/lib/auth";
 
 const PROGRESS_EMAIL_DELAY_DAYS = 28;
 const LAUNCH_EMAIL_WINDOW_DAYS = 7;
@@ -10,7 +11,7 @@ export async function GET(request: Request) {
   const auth = request.headers.get("authorization");
   const secret = process.env.CRON_SECRET;
 
-  if (!secret || auth !== `Bearer ${secret}`) {
+  if (!secret || !auth || !timingSafeEqual(auth, `Bearer ${secret}`)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

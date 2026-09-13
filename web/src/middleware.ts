@@ -1,22 +1,13 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { checkAdminBasicAuth } from "@/lib/auth";
 
 export function middleware(request: NextRequest) {
-  const user = process.env.ADMIN_USER;
-  const pass = process.env.ADMIN_PASSWORD;
-
-  if (!user || !pass) {
+  if (!process.env.ADMIN_USER || !process.env.ADMIN_PASSWORD) {
     return new NextResponse("Admin access is not configured", { status: 503 });
   }
 
-  const auth = request.headers.get("authorization");
-  if (auth) {
-    const [scheme, encoded] = auth.split(" ");
-    if (scheme === "Basic" && encoded) {
-      const [providedUser, providedPass] = atob(encoded).split(":");
-      if (providedUser === user && providedPass === pass) {
-        return NextResponse.next();
-      }
-    }
+  if (checkAdminBasicAuth(request.headers.get("authorization"))) {
+    return NextResponse.next();
   }
 
   return new NextResponse("Authentication required", {

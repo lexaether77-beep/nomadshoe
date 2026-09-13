@@ -3,12 +3,13 @@ import { track } from "@vercel/analytics/server";
 import { db } from "@/lib/db";
 import { verifyTransaction } from "@/lib/flutterwave";
 import { sendOrderConfirmation, buildOrderConfirmationEmail } from "@/lib/email";
+import { timingSafeEqual } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const signature = request.headers.get("verif-hash");
   const expected = process.env.FLUTTERWAVE_WEBHOOK_SECRET_HASH;
 
-  if (!expected || signature !== expected) {
+  if (!expected || !signature || !timingSafeEqual(signature, expected)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
