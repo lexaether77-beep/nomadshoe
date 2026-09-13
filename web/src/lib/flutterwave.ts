@@ -89,3 +89,30 @@ export async function verifyTransaction(transactionId: string | number) {
 
   return body.data;
 }
+
+/**
+ * Look up a transaction by OUR tx_ref rather than Flutterwave's internal
+ * numeric id — needed for recovery when an order never got a
+ * flutterwaveTxId recorded (e.g. the webhook never fired or failed).
+ */
+export async function verifyTransactionByReference(txRef: string) {
+  const secretKey = process.env.FLUTTERWAVE_SECRET_KEY;
+  if (!secretKey) {
+    throw new Error("FLUTTERWAVE_SECRET_KEY is not configured");
+  }
+
+  const res = await fetch(
+    `${FLUTTERWAVE_API}/transactions/verify_by_reference?tx_ref=${encodeURIComponent(txRef)}`,
+    {
+      headers: { Authorization: `Bearer ${secretKey}` },
+    }
+  );
+
+  const body = (await res.json()) as FlutterwaveVerifyResponse;
+
+  if (!res.ok || body.status !== "success" || !body.data) {
+    throw new Error(body.message || "No matching Flutterwave transaction found for this reference");
+  }
+
+  return body.data;
+}

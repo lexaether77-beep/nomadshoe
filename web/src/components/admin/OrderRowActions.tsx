@@ -7,6 +7,7 @@ import {
   markOrderDelivered,
   sendCustomMessage,
   getMessageTemplate,
+  recheckOrderPayment,
 } from "@/lib/admin-actions";
 
 type MessageSummary = {
@@ -46,6 +47,16 @@ export function OrderRowActions({
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
   const [status, setStatus] = useState<string | null>(null);
+  const [recheckMessage, setRecheckMessage] = useState<string | null>(null);
+
+  function handleRecheck() {
+    setRecheckMessage(null);
+    startTransition(async () => {
+      const result = await recheckOrderPayment(orderId);
+      setRecheckMessage(result.message);
+      router.refresh();
+    });
+  }
 
   function handleShip() {
     startTransition(async () => {
@@ -89,6 +100,16 @@ export function OrderRowActions({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
+        {!isPaid && (
+          <button
+            type="button"
+            onClick={handleRecheck}
+            disabled={isPending}
+            className="rounded-full px-3 py-1 font-technical text-xs ring-1 ring-line hover:ring-muted disabled:opacity-60"
+          >
+            Recheck Payment
+          </button>
+        )}
         {isPaid && !shippedAt && (
           <button
             type="button"
@@ -136,6 +157,10 @@ export function OrderRowActions({
           </button>
         )}
       </div>
+
+      {recheckMessage && (
+        <p className="font-technical text-xs text-muted">{recheckMessage}</p>
+      )}
 
       {showHistory && messages.length > 0 && (
         <div className="flex flex-col gap-1 rounded-lg bg-surface-raised p-3 ring-1 ring-line">
