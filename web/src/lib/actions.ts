@@ -58,16 +58,16 @@ export async function createOrder(
     return { error: "Your cart is empty. Please add an item before checking out." };
   }
 
-  const amountUSD = cartItems.reduce(
-    (sum, item) => sum + item.quantity * nomadMeta.priceUSD,
+  const amountNGN = cartItems.reduce(
+    (sum, item) => sum + item.quantity * nomadMeta.priceNGN,
     0
   );
 
   const { currency } = parsed.data;
   const amount =
-    currency === "NGN"
-      ? Math.round(amountUSD * (await getUsdToNgnRate()))
-      : amountUSD;
+    currency === "USD"
+      ? Math.round(amountNGN / (await getUsdToNgnRate()))
+      : amountNGN;
 
   const reference = `KLT-${randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()}`;
 
@@ -90,7 +90,7 @@ export async function createOrder(
           colorwaySlug: item.colorwaySlug,
           size: item.size,
           quantity: item.quantity,
-          unitPriceUSD: nomadMeta.priceUSD,
+          unitPriceUSD: nomadMeta.priceNGN,
         })),
       },
     },

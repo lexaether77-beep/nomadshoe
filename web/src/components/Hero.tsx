@@ -103,7 +103,7 @@ export function Hero() {
           variants={fadeUp}
           className="mt-3 font-technical text-xs text-muted"
         >
-          ${nomadMeta.priceUSD} &middot; shipping included
+          &#8358;{nomadMeta.priceNGN.toLocaleString()} &middot; shipping included
         </motion.p>
       </motion.div>
 

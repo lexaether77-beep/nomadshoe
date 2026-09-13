@@ -68,9 +68,9 @@ export function cartItemCount(items: CartItem[]): number {
   return items.reduce((sum, item) => sum + item.quantity, 0);
 }
 
-export function cartSubtotalUSD(items: CartItem[]): number {
+export function cartSubtotalNGN(items: CartItem[]): number {
   return items.reduce(
-    (sum, item) => sum + item.quantity * nomadMeta.priceUSD,
+    (sum, item) => sum + item.quantity * nomadMeta.priceNGN,
     0
   );
 }

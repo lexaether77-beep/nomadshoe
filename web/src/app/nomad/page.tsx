@@ -17,8 +17,8 @@ export async function generateMetadata({
   const requested = typeof params.color === "string" ? params.color : undefined;
   const initial = (requested && getColorway(requested)) || colorways[0];
 
-  const title = `${initial.name} — KLΘT NOMAD, $${nomadMeta.priceUSD}`;
-  const description = `Preorder the KLΘT NOMAD in ${initial.name} (${initial.tagline}). Zero-drop, five-toe barefoot shoe, Nsibidi-etched. $${nomadMeta.priceUSD} USD, shipping included. Ships October 2026.`;
+  const title = `${initial.name} — KLΘT NOMAD, ₦${nomadMeta.priceNGN.toLocaleString()}`;
+  const description = `Preorder the KLΘT NOMAD in ${initial.name} (${initial.tagline}). Zero-drop, five-toe barefoot shoe, Nsibidi-etched. ₦${nomadMeta.priceNGN.toLocaleString()} NGN, shipping included. Ships October 2026.`;
   const ogImage = `/images/og/${initial.slug}.jpg`;
 
   return {
@@ -64,8 +64,8 @@ export default async function NomadPage({ searchParams }: NomadPageProps) {
     offers: {
       "@type": "Offer",
       url: `${siteUrl}/nomad`,
-      priceCurrency: "USD",
-      price: nomadMeta.priceUSD,
+      priceCurrency: "NGN",
+      price: nomadMeta.priceNGN,
       availability: "https://schema.org/PreOrder",
       itemCondition: "https://schema.org/NewCondition",
     },

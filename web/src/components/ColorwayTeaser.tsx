@@ -14,7 +14,7 @@ export function ColorwayTeaser() {
           Choose Your Colorway
         </h2>
         <p className="mt-3 font-technical text-sm text-muted">
-          ${nomadMeta.priceUSD} &middot; shipping included
+          &#8358;{nomadMeta.priceNGN.toLocaleString()} &middot; shipping included
         </p>
       </div>
 

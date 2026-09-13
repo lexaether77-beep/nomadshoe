@@ -6,7 +6,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { getColorway } from "@/lib/colorways";
 import { nomadMeta } from "@/lib/specs";
-import { useCartStore, cartSubtotalUSD } from "@/lib/cart-store";
+import { useCartStore, cartSubtotalNGN } from "@/lib/cart-store";
 import { createOrder, type CheckoutState } from "@/lib/actions";
 
 const inputClass =
@@ -14,7 +14,7 @@ const inputClass =
 
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
-  const subtotal = cartSubtotalUSD(items);
+  const subtotal = cartSubtotalNGN(items);
   const [currency, setCurrency] = useState<"USD" | "NGN">("USD");
   const [state, formAction, pending] = useActionState<CheckoutState, FormData>(
     createOrder,
@@ -35,7 +35,7 @@ export default function CheckoutPage() {
     };
   }, []);
 
-  const ngnEstimate = ngnRate ? Math.round(subtotal * ngnRate) : null;
+  const usdEstimate = ngnRate ? Math.round(subtotal / ngnRate) : null;
 
   return (
     <>
@@ -215,10 +215,10 @@ export default function CheckoutPage() {
               {ngnRate && (
                 <p className="font-technical text-xs text-muted">
                   Live rate: 1 USD &asymp; &#8358;{Math.round(ngnRate).toLocaleString()}
-                  {currency === "NGN" && ngnEstimate && (
+                  {currency === "USD" && usdEstimate && (
                     <>
                       {" "}
-                      &middot; est. total &#8358;{ngnEstimate.toLocaleString()}
+                      &middot; est. total ${usdEstimate}
                       {" "}&middot; final amount confirmed at checkout
                     </>
                   )}
@@ -264,7 +264,8 @@ export default function CheckoutPage() {
                         {item.size})
                       </span>
                       <span className="font-technical">
-                        ${item.quantity * nomadMeta.priceUSD}
+                        &#8358;
+                        {(item.quantity * nomadMeta.priceNGN).toLocaleString()}
                       </span>
                     </div>
                   );
@@ -276,11 +277,11 @@ export default function CheckoutPage() {
                 </span>
                 <div className="text-right">
                   <span className="font-display text-xl font-medium">
-                    ${subtotal}
+                    &#8358;{subtotal.toLocaleString()}
                   </span>
-                  {currency === "NGN" && ngnEstimate && (
+                  {currency === "USD" && usdEstimate && (
                     <p className="font-technical text-xs text-muted">
-                      &asymp; &#8358;{ngnEstimate.toLocaleString()}
+                      &asymp; ${usdEstimate}
                     </p>
                   )}
                 </div>

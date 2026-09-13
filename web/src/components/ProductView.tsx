@@ -226,10 +226,10 @@ export function ProductView({
         </AnimatePresence>
 
         <p className="mt-6 font-display text-2xl font-medium">
-          ${nomadMeta.priceUSD}
+          &#8358;{nomadMeta.priceNGN.toLocaleString()}
           <span className="ml-2 text-sm font-normal text-muted">
-            USD &middot; shipping included &middot; full preorder payment
-            &middot; NGN available at checkout
+            NGN &middot; shipping included &middot; full preorder payment
+            &middot; USD available at checkout
           </span>
         </p>
         {wave && (
@@ -414,7 +414,9 @@ export function ProductView({
             {size !== null && (
               <span className="text-muted"> &middot; EU {size}</span>
             )}
-            <span className="ml-2 text-muted">${nomadMeta.priceUSD}</span>
+            <span className="ml-2 text-muted">
+              &#8358;{nomadMeta.priceNGN.toLocaleString()}
+            </span>
           </div>
           <button
             type="button"

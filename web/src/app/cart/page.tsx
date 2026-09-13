@@ -7,16 +7,16 @@ import { Footer } from "@/components/Footer";
 import { ProductStage } from "@/components/ProductStage";
 import { getColorway } from "@/lib/colorways";
 import { nomadMeta } from "@/lib/specs";
-import { useCartStore, cartSubtotalUSD } from "@/lib/cart-store";
+import { useCartStore, cartSubtotalNGN } from "@/lib/cart-store";
 
 export default function CartPage() {
   const items = useCartStore((state) => state.items);
   const setQuantity = useCartStore((state) => state.setQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
-  const subtotal = cartSubtotalUSD(items);
+  const subtotal = cartSubtotalNGN(items);
 
   function handleCheckoutClick() {
-    track("checkout_started", { itemCount: items.length, subtotalUSD: subtotal });
+    track("checkout_started", { itemCount: items.length, subtotalNGN: subtotal });
   }
 
   return (
@@ -61,7 +61,8 @@ export default function CartPage() {
                           {colorway.name}
                         </p>
                         <p className="text-sm text-muted">
-                          EU {item.size} &middot; ${nomadMeta.priceUSD}
+                          EU {item.size} &middot; &#8358;
+                          {nomadMeta.priceNGN.toLocaleString()}
                         </p>
                       </div>
 
@@ -120,11 +121,11 @@ export default function CartPage() {
                   Subtotal
                 </span>
                 <span className="font-display text-xl font-medium">
-                  ${subtotal}
+                  &#8358;{subtotal.toLocaleString()}
                 </span>
               </div>
               <p className="font-technical text-xs text-muted">
-                Shipping included. NGN conversion (if selected) calculated at
+                Shipping included. USD conversion (if selected) calculated at
                 checkout.
               </p>
             </div>

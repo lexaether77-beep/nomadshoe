@@ -18,7 +18,7 @@ export const nomadMeta = {
   sku: "KLT-NMD-BGP-001",
   release: "October 2026",
   origin: "Lagos, Nigeria",
-  priceUSD: 5,
+  priceNGN: 120000,
 } as const;
 
 /** KLΘT NOMAD ships on a 2-size scale — each mold covers a pair of
